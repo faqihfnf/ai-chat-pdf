@@ -21,17 +21,19 @@ export async function POST(req: Request) {
 
   switch (event.type) {
     case "user.created":
-    case "user.updated":
-      await prisma.user.upsert({
-        where: {
+      await prisma.user.create({
+        data: {
           clerkId: event.data.id,
-        },
-        update: {
           email: event.data.email_addresses[0].email_address,
           name: `${event.data.first_name} ${event.data.last_name}`,
         },
-        create: {
+      });
+    case "user.updated":
+      await prisma.user.update({
+        where: {
           clerkId: event.data.id,
+        },
+        data: {
           email: event.data.email_addresses[0].email_address,
           name: `${event.data.first_name} ${event.data.last_name}`,
         },

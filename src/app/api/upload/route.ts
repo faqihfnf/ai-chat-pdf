@@ -1,3 +1,5 @@
+import { LoadToPinecone } from "@/lib/pinecone";
+import prisma from "@/lib/prisma";
 import { supabase } from "@/lib/supabase";
 import { auth } from "@clerk/nextjs/server";
 import { CloudCog } from "lucide-react";
@@ -36,7 +38,7 @@ export async function POST(request: NextRequest) {
     const fileName = `${originalFileName}-${Date.now()}`;
     const bucketName = "documents";
     //# upload file to supabase
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from(bucketName)
       .upload(fileName, file);
     if (error) {
@@ -46,13 +48,35 @@ export async function POST(request: NextRequest) {
     const { data: publicUrlData } = await supabase.storage
       .from(bucketName)
       .getPublicUrl(fileName);
-    console.log(publicUrlData.publicUrl);
 
     //# upload to pinecone
+    await LoadToPinecone(fileName);
     //# save document data to prisma
+    const user = await prisma.user.findUnique({
+      where: {
+        clerkId: userId,
+      },
+    });
+
+    if (!user) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+
+    await prisma.chat.create({
+      data: {
+        fileName: fileName,
+        fileSize: fileSize,
+        mimeType: mimeType,
+        fileUrl: publicUrlData?.publicUrl,
+        userId: user.id,
+      },
+    });
 
     return NextResponse.json(
-      { message: "File Upload Successfully" },
+      {
+        message: "File Upload Successfully",
+        publicUrl: publicUrlData?.publicUrl,
+      },
       { status: 200 }
     );
   } catch (error) {

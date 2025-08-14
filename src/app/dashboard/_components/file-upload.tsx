@@ -1,6 +1,6 @@
 "use client";
 import { useMutation } from "@tanstack/react-query";
-import { Inbox } from "lucide-react";
+import { Inbox, Loader } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 
@@ -40,10 +40,16 @@ export default function FileUpload() {
       {...getRootProps()}
       className="bg-slate-200 w-full h-full border-dashed border-2 border-slate-400 flex flex-col items-center justify-center rounded-lg cursor-pointer hover:bg-slate-200/70 p-20">
       <input {...getInputProps()} accept="application/pdf" />
-      <div className="flex flex-col items-center gap-4">
-        <Inbox className="h-8 w-8 text-indigo-700" />
-        <p>Drag and drop your PDF here, or click to select a file</p>
-      </div>
+      <>
+        {mutation.isPending ? (
+          <Loader className="h-8 w-8 text-indigo-700 animate-spin" />
+        ) : (
+          <Inbox className="h-8 w-8 text-indigo-700" />
+        )}
+        <p className="text-sm text-muted-foreground">
+          {mutation.isPending ? "Uploading..." : "Drag and drop your PDF here"}
+        </p>
+      </>
     </div>
   );
 }
