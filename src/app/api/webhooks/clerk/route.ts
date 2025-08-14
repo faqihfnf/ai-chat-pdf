@@ -1,11 +1,13 @@
 import prisma from "@/lib/prisma";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { headers } from "next/headers";
+import { NextResponse } from "next/server";
 import { Webhook } from "svix";
 
 export async function POST(req: Request) {
   const secret = process.env.SIGNING_SECRET;
-  if (!secret) return new Response("Missing SIGNING_SECRET", { status: 500 });
+  if (!secret)
+    return NextResponse.json("Missing SIGNING_SECRET", { status: 500 });
 
   const wh = new Webhook(secret);
   const body = await req.text();
@@ -17,13 +19,35 @@ export async function POST(req: Request) {
     "svix-signature": headerPayload.get("svix-signature")!,
   }) as WebhookEvent;
 
-  if (event.type === "user.created") {
-    const { id, email_addresses, first_name, last_name } = event.data;
-    await prisma.user.upsert({
-      where: { clerkId: id },
-      update: {},
-      create: { clerkId: id, email: email_addresses[0].email_address, name: `${first_name} ${last_name}` },
-    });
+  switch (event.type) {
+    case "user.created":
+    case "user.updated":
+      await prisma.user.upsert({
+        where: {
+          clerkId: event.data.id,
+        },
+        update: {
+          email: event.data.email_addresses[0].email_address,
+          name: `${event.data.first_name} ${event.data.last_name}`,
+        },
+        create: {
+          clerkId: event.data.id,
+          email: event.data.email_addresses[0].email_address,
+          name: `${event.data.first_name} ${event.data.last_name}`,
+        },
+      });
+      break;
+    case "user.deleted":
+      await prisma.user.delete({
+        where: {
+          clerkId: event.data.id,
+        },
+      });
+      break;
+
+    default:
+      console.log(`Unhandled event type: ${event.type}`);
   }
-  return new Response("OK", { status: 200 });
+
+  return NextResponse.json("OK", { status: 200 });
 }
