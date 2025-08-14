@@ -8,7 +8,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="flex text-center flex-col items-center justify-center w-full gap-8 mx-auto bg-gradient-to-tr from-amber-100 via-orange-100 to-rose-200">
-      <Badge className="flex items-center gap-2 py-1 px-3 bg-indigo-200 rounded-full mt-30">
+      <Badge className="flex items-center gap-2 py-1 px-3 bg-indigo-200 rounded-full mt-20">
         <Stars className="w-4 h-4 text-indigo-800" />
         <span className="text-xs text-indigo-800 font-medium">
           Powered by AI
@@ -41,13 +41,13 @@ export default function Home() {
         </Link>
       </SignedIn>
 
-      <div className="mt-6 mb-6 p-1 bg-slate-300 rounded-2xl">
+      <div className="mt-6 mb-6 p-0.5 bg-orange-100 rounded-2xl shadow-orange-200 shadow-[0_0_15px_0_var(--tw-shadow-color)]">
         <Image
           src="/showcase.png"
           width={800}
-          height={600}
+          height={800}
           alt="showcase"
-          className="rounded-xl"
+          className="rounded-xl h-auto w-auto"
         />
       </div>
     </div>

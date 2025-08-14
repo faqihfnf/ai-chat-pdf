@@ -8,7 +8,7 @@ export default function Navbar() {
     <div className="fixed items-center justify-between flex w-full p-3 top-0 z-50 bg-white/10 backdrop-blur-md border-b-[1px] border-slate-300/20 h-14">
       <Link
         href="/"
-        className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500">
+        className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500">
         ChatPDF.
       </Link>
 

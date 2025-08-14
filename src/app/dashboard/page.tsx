@@ -15,7 +15,7 @@ export default function Dashboard() {
           real-time with AI. It&apos;s that easy.
         </p>
 
-        <div className="p-4 border-2  border-slate-400 rounded-lg shadow-xl">
+        <div className="p-4 border-1 w-full h-[350px] border-slate-200 rounded-lg shadow-[0_0_15px_0_var(--tw-shadow-color)] hover:shadow-[0_0_25px_0_var(--tw-shadow-color)] shadow-orange-100 hover:shadow-orange-200 transition-all duration-300 ease-in-out">
           <FileUpload />
         </div>
       </div>

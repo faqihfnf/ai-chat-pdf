@@ -1,10 +1,12 @@
 "use client";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Inbox, Loader } from "lucide-react";
+import Image from "next/image";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 
 export default function FileUpload() {
+  const queryClient = useQueryClient();
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
       "application/pdf": [".pdf"],
@@ -30,6 +32,8 @@ export default function FileUpload() {
     },
     onSuccess: () => {
       toast.success("File uploaded successfully");
+      queryClient.invalidateQueries({ queryKey: ["chats"] });
+      window.location.reload();
     },
     onError: () => {
       toast.error("File upload failed");
@@ -38,16 +42,19 @@ export default function FileUpload() {
   return (
     <div
       {...getRootProps()}
-      className="bg-slate-200 w-full h-full border-dashed border-2 border-slate-400 flex flex-col items-center justify-center rounded-lg cursor-pointer hover:bg-slate-200/70 p-20">
+      className="bg-gradient-to-tr from-amber-100/50 via-orange-100/50 to-rose-200/50 hover:bg-gradient-to-tr hover:from-amber-100 hover:via-orange-100 hover:to-rose-200 w-full h-full border-dashed border-1 border-orange-400 flex flex-col items-center justify-center rounded-lg cursor-pointer p-20 transition-all duration-300 ease-in-out">
       <input {...getInputProps()} accept="application/pdf" />
       <>
         {mutation.isPending ? (
-          <Loader className="h-8 w-8 text-indigo-700 animate-spin" />
+          <Loader className="h-8 w-8 text-orange-700 animate-spin" />
         ) : (
-          <Inbox className="h-8 w-8 text-indigo-700" />
+          <Image src="/upload.svg" width={100} height={100} alt="upload" />
+          // <Inbox className="h-20 w-20 text-orange-700" />
         )}
-        <p className="text-sm text-muted-foreground">
-          {mutation.isPending ? "Uploading..." : "Drag and drop your PDF here"}
+        <p className="text-md text-medium mt-2">
+          {mutation.isPending
+            ? "Uploading Document..."
+            : "Drag and drop your PDF here"}
         </p>
       </>
     </div>
