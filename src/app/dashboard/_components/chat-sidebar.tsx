@@ -11,9 +11,9 @@ export default function ChatSidebar() {
         <div className="h-full bg-slate-700 flex flex-col items-center">
           <div className="p-4 w-full">
             <Link href="/dashboard" className="w-full">
-              <Button className="w-full border-2 border-dotted border-slate-400">
-                <Upload className="h-4 w-4" />
-                Upload PDF
+              <Button className="w-full border-2 border-dotted border-slate-300 text-xs">
+                <Upload />
+                <span className="mt-0.5">Upload PDF</span>
               </Button>
             </Link>
           </div>

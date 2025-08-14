@@ -11,7 +11,7 @@ export default function DashboardLayout({
 }) {
   const isMobile = UseMediaQuery("(max-width: 768px)");
   return (
-    <div className="h-[calc(100vh-56px)]">
+    <div className="h-[calc(100vh-56px)] mt-14">
       <ResizablePanelGroup direction={isMobile ? "vertical" : "horizontal"}>
         <ChatSidebar />
         {children}
