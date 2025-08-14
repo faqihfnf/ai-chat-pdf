@@ -1,6 +1,8 @@
 "use client";
+import { useMutation } from "@tanstack/react-query";
 import { Inbox } from "lucide-react";
 import { useDropzone } from "react-dropzone";
+import { toast } from "sonner";
 
 export default function FileUpload() {
   const { getRootProps, getInputProps } = useDropzone({
@@ -8,7 +10,30 @@ export default function FileUpload() {
       "application/pdf": [".pdf"],
     },
     maxFiles: 1,
-    onDrop: () => {},
+    onDrop: (file) => {
+      mutation.mutate(file[0]);
+    },
+  });
+
+  const mutation = useMutation({
+    mutationFn: async (file: File) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+      if (!res.ok) {
+        throw new Error("File upload failed");
+      }
+      return await res.json();
+    },
+    onSuccess: () => {
+      toast.success("File uploaded successfully");
+    },
+    onError: () => {
+      toast.error("File upload failed");
+    },
   });
   return (
     <div
