@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import Navbar from "@/components/sections/Navbar";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +25,12 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={` ${poppins.className} ${inter.className}  antialiased`}>{children}</body>
+        <body
+          className={` ${poppins.className} ${inter.className}  antialiased`}>
+          <Navbar />
+          <main>{children}</main>
+          <Toaster />
+        </body>
       </html>
     </ClerkProvider>
   );
