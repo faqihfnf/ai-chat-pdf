@@ -58,6 +58,7 @@ export default function ChatSidebar() {
         </div>
       </ResizablePanel>
 
+      {/* Handler Resizer */}
       <div className="relative flex items-center">
         <ResizableHandle className="bg-slate-100 w-0.5 h-full" />
         <div className="absolute inset-0 flex items-center pointer-events-none justify-center">
