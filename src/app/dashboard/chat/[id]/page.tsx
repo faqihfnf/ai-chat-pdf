@@ -7,6 +7,17 @@ import { GripVertical, Loader, Trash } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function DetailChat() {
   const { id } = useParams();
@@ -48,17 +59,38 @@ export default function DetailChat() {
           <div className="h-full">
             <div className="flex flex-row justify-between px-4 py-2 gap-4 items-center">
               <p className=" font-semibold">{data?.fileName}</p>
-              <Button
-                disabled={mutation.isPending}
-                size={"icon"}
-                variant={"destructive"}
-                onClick={() => mutation.mutate()}>
-                {mutation.isPending ? (
-                  <Loader className="animate-spin" />
-                ) : (
-                  <Trash />
-                )}
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  {/* Tombol ini sekarang berfungsi sebagai pemicu dialog */}
+                  <Button
+                    disabled={mutation.isPending}
+                    size={"icon"}
+                    variant={"destructive"}>
+                    {mutation.isPending ? (
+                      <Loader className="animate-spin" />
+                    ) : (
+                      <Trash />
+                    )}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Apakah Anda yakin?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Tindakan ini tidak dapat dibatalkan. Ini akan menghapus
+                      chat secara permanen dari server kami.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Batal</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => mutation.mutate()}
+                      className={"bg-red-600 hover:bg-red-700"}>
+                      Hapus
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
             <iframe
               src={`${data?.fileUrl}#view=fitH`}
