@@ -18,6 +18,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import ChatContainer from "../_components/chat-container";
 
 export default function DetailChat() {
   const { id } = useParams();
@@ -109,7 +110,10 @@ export default function DetailChat() {
       </div>
 
       <ResizablePanel defaultSize={30} minSize={20} className="h-full">
-        Chat
+        <ChatContainer
+          fileName={data?.fileName as string}
+          chatId={id as string}
+        />
       </ResizablePanel>
     </>
   );
