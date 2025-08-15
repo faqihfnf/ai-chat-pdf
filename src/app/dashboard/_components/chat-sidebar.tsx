@@ -4,11 +4,13 @@ import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { Chat } from "@prisma/client";
-import { useQuery } from "@tanstack/react-query";
-import { GripVertical, Upload } from "lucide-react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { GripVertical, Loader, Upload } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import React from "react";
+import { useDropzone } from "react-dropzone";
+import { toast } from "sonner";
 
 export default function ChatSidebar() {
   const { data, isLoading } = useQuery({
@@ -20,17 +22,69 @@ export default function ChatSidebar() {
   });
 
   const { id } = useParams();
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: async (file: File) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+      if (!res.ok) {
+        throw new Error("File upload failed");
+      }
+      return await res.json();
+    },
+    onSuccess: () => {
+      toast.success("File uploaded successfully");
+      queryClient.invalidateQueries({ queryKey: ["chats"] });
+    },
+    onError: (err) => {
+      console.error(err);
+      toast.error("File upload failed");
+    },
+  });
+
+  const { getInputProps, open } = useDropzone({
+    accept: { "application/pdf": [".pdf"] },
+    maxFiles: 1,
+    onDrop: (acceptedFiles) => {
+      if (acceptedFiles && acceptedFiles[0]) {
+        mutation.mutate(acceptedFiles[0]);
+      }
+    },
+    noClick: true, // Mencegah pembukaan dialog file saat area lain diklik
+    noKeyboard: true,
+  });
+
   return (
     <>
       <ResizablePanel defaultSize={15} minSize={10}>
         <div className="h-full bg-slate-700 flex flex-col items-center">
           <div className="p-4 w-full">
-            <Link href="/dashboard" className="w-full">
-              <Button className="w-full border-2 border-dotted border-slate-300 text-xs hover:text-indigo-300">
-                <Upload />
-                <span className="mt-0.5">Upload PDF</span>
-              </Button>
-            </Link>
+            {/* 3. Render input tersembunyi */}
+            <input {...getInputProps()} />
+
+            {/* 4. Ubah Link menjadi Button dengan onClick dan state loading */}
+            <Button
+              className="w-full border-2 border-dotted border-slate-300 text-xs hover:text-indigo-300"
+              onClick={open} // Panggil fungsi 'open' untuk memicu upload
+              disabled={mutation.isPending} // Nonaktifkan tombol saat proses upload
+            >
+              {mutation.isPending ? (
+                <>
+                  <Loader className="h-4 w-4 animate-spin mr-2" />
+                  <span>Uploading...</span>
+                </>
+              ) : (
+                <>
+                  <Upload className="h-4 w-4 mr-2" />
+                  <span className="mt-0.5">Upload PDF</span>
+                </>
+              )}
+            </Button>
           </div>
           <div className="h-full overflow-y-auto w-full p-4 flex-1">
             {isLoading ? (
@@ -39,7 +93,7 @@ export default function ChatSidebar() {
               ))
             ) : (
               <div className="w-full flex flex-col gap-2">
-                {data.map((chat: Chat) => (
+                {data?.map((chat: Chat) => (
                   <Link
                     key={chat.id}
                     href={`/dashboard/chat/${chat.id}`}

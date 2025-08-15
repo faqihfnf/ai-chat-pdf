@@ -34,7 +34,9 @@ export default function DetailChat() {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const res = await fetch(`/api/chat/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/chat/${id}`, {
+        method: "DELETE",
+      });
 
       if (!res.ok) throw new Error("Failed to delete chat");
 
@@ -62,7 +64,6 @@ export default function DetailChat() {
               <p className=" font-semibold">{data?.fileName}</p>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  {/* Tombol ini sekarang berfungsi sebagai pemicu dialog */}
                   <Button
                     disabled={mutation.isPending}
                     size={"icon"}

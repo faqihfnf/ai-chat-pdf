@@ -33,7 +33,6 @@ export default function FileUpload() {
     onSuccess: () => {
       toast.success("File uploaded successfully");
       queryClient.invalidateQueries({ queryKey: ["chats"] });
-      window.location.reload();
     },
     onError: () => {
       toast.error("File upload failed");
