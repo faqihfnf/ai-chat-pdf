@@ -2,10 +2,12 @@
 import { Button } from "@/components/ui/button";
 import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 import { Chat } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { GripVertical, Upload } from "lucide-react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import React from "react";
 
 export default function ChatSidebar() {
@@ -16,6 +18,8 @@ export default function ChatSidebar() {
       return await res.json();
     },
   });
+
+  const { id } = useParams();
   return (
     <>
       <ResizablePanel defaultSize={15} minSize={10}>
@@ -39,7 +43,12 @@ export default function ChatSidebar() {
                   <Link
                     key={chat.id}
                     href={`/dashboard/chat/${chat.id}`}
-                    className="w-full truncate text-xs bg-slate-900/10 text-slate-100 hover:bg-slate-900/30 hover:text-indigo-300 p-2 mb-1 rounded-md">
+                    className={cn(
+                      "w-full truncate text-xs bg-slate-900/10 text-slate-100 hover:bg-slate-900/30 hover:text-indigo-300 p-2 mb-1 rounded-md",
+                      {
+                        "bg-slate-900/40 text-indigo-400": chat.id === id,
+                      }
+                    )}>
                     {chat.fileName}
                   </Link>
                 ))}
