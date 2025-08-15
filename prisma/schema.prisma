@@ -41,7 +41,7 @@ model Message {
   content String
 
   chatId String @db.Uuid
-  chat   Chat   @relation(fields: [chatId], references: [id])
+  chat   Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
 
   userId String @db.Uuid
   user   User   @relation(fields: [userId], references: [id])
