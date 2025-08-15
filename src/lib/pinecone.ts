@@ -52,3 +52,13 @@ export async function LoadToPinecone(fileName: string) {
     throw error;
   }
 }
+
+export async function deleteNamespace(fileName: string) {
+  try {
+    const result = await index.namespace(fileName).deleteAll();
+    return result;
+  } catch (error) {
+    console.log("Error Delete Namespace", error);
+    throw error;
+  }
+}

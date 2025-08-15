@@ -2,18 +2,39 @@
 import { Button } from "@/components/ui/button";
 import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
 import { Chat } from "@prisma/client";
-import { useQuery } from "@tanstack/react-query";
-import { GripVertical, Trash } from "lucide-react";
-import { useParams } from "next/navigation";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { GripVertical, Loader, Trash } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
 import React from "react";
+import { toast } from "sonner";
 
 export default function DetailChat() {
   const { id } = useParams();
+  const queryClient = useQueryClient();
+  const router = useRouter();
   const { data, isLoading, isError } = useQuery({
     queryKey: ["chats", id],
     queryFn: async (): Promise<Chat> => {
       const res = await fetch(`/api/chat/${id}`);
       return await res.json();
+    },
+  });
+
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const res = await fetch(`/api/chat/${id}`, { method: "DELETE" });
+
+      if (!res.ok) throw new Error("Failed to delete chat");
+
+      return await res.json();
+    },
+    onSuccess: () => {
+      toast.success("Chat deleted successfully");
+      queryClient.invalidateQueries({ queryKey: ["chats"] });
+      router.push("/dashboard");
+    },
+    onError: () => {
+      toast.error("Failed to delete chat");
     },
   });
 
@@ -27,8 +48,16 @@ export default function DetailChat() {
           <div className="h-full">
             <div className="flex flex-row justify-between px-4 py-2 gap-4 items-center">
               <p className=" font-semibold">{data?.fileName}</p>
-              <Button size={"icon"} variant={"destructive"}>
-                <Trash />
+              <Button
+                disabled={mutation.isPending}
+                size={"icon"}
+                variant={"destructive"}
+                onClick={() => mutation.mutate()}>
+                {mutation.isPending ? (
+                  <Loader className="animate-spin" />
+                ) : (
+                  <Trash />
+                )}
               </Button>
             </div>
             <iframe
