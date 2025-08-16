@@ -4,7 +4,6 @@ import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
 import { Skeleton } from "@/components/ui/skeleton";
 import formatFileName from "@/lib/format-file-name";
 import { cn } from "@/lib/utils";
-import { chat } from "@pinecone-database/pinecone/dist/assistant/data/chat";
 import { Chat } from "@prisma/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GripVertical, Loader, Upload } from "lucide-react";

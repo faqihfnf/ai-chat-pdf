@@ -14,7 +14,7 @@ type Props = {
 // Function untuk render markdown-like text
 function renderMarkdownText(text: string) {
   // Replace bold text (**text** atau *text*)
-  let formattedText = text
+  const formattedText = text
     .replace(/\*\*\*(.*?)\*\*\*/g, "<strong><em>$1</em></strong>") // Bold + Italic
     .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // Bold
     .replace(/(?<!\*)\*(?!\*)([^*]+)\*(?!\*)/g, "<em>$1</em>") // Italic

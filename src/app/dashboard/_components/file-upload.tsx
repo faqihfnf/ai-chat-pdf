@@ -1,6 +1,6 @@
 "use client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Inbox, Loader } from "lucide-react";
+import { Loader } from "lucide-react";
 import Image from "next/image";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";

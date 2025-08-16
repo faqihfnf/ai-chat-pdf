@@ -1,12 +1,7 @@
 "use client";
 import MessageList from "./message-list";
 import { Button } from "@/components/ui/button";
-import {
-  Send,
-  FileText,
-  BotMessageSquare,
-  LayoutDashboard,
-} from "lucide-react";
+import { Send, BotMessageSquare, LayoutDashboard } from "lucide-react";
 import { FormEvent, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Message, MessageRole } from "@prisma/client";
@@ -64,7 +59,6 @@ export default function ChatContainer({ fileName, chatId }: Props) {
       if (!response.ok) {
         throw new Error("Failed to send message");
       }
-      const messageContent = message.trim(); // Simpan untuk reset
       setMessage("");
       resetTextareaHeight(); // Reset height setelah clear message
       return await response.json();
@@ -203,7 +197,7 @@ export default function ChatContainer({ fileName, chatId }: Props) {
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
-                  handleSubmit(e as any);
+                  handleSubmit(e as unknown as FormEvent<HTMLFormElement>);
                 } else if (e.key === "Enter" && e.shiftKey) {
                   // Allow default behavior for line break
                 }

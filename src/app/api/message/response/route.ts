@@ -59,5 +59,8 @@ Remember: Your goal is to help users get maximum value from their document while
       { message: content, role: MessageRole.SYSTEM },
       { status: 200 }
     );
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(error, { status: 500 });
+  }
 }

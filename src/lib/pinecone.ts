@@ -3,7 +3,6 @@ import { supabase } from "./supabase";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { generateEmbeddings } from "./gemini";
-import { metadata } from "@/app/layout";
 
 export const pc = new Pinecone({
   apiKey: process.env.PINECONE_API_KEY as string,
