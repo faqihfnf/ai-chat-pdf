@@ -106,18 +106,18 @@ export default function MessageList({ messages, isSending, isLoading }: Props) {
       ))}
 
       {isSending && (
-        <div className="flex items-center gap-3 max-w-[80%] self-start">
-          <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center flex-shrink-0">
-            <BotMessageSquare className="w-4 h-4 text-slate-600" />
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+            <BotMessageSquare className="w-4 h-4 text-white" />
           </div>
-          <div className="bg-white rounded-2xl rounded-tl-md px-4 py-2 shadow-sm border border-slate-200">
+          <div className="bg-white rounded-md px-4 py-2 shadow-sm">
             <div className="flex items-center gap-1">
-              <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></div>
+              <div className="w-2 h-2 bg-orange-400 rounded-full animate-bounce"></div>
               <div
-                className="w-2 h-2 bg-slate-400 rounded-full animate-bounce"
+                className="w-2 h-2 bg-orange-400 rounded-full animate-bounce"
                 style={{ animationDelay: "0.1s" }}></div>
               <div
-                className="w-2 h-2 bg-slate-400 rounded-full animate-bounce"
+                className="w-2 h-2 bg-orange-400 rounded-full animate-bounce"
                 style={{ animationDelay: "0.2s" }}></div>
             </div>
           </div>
