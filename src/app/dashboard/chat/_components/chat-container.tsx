@@ -176,8 +176,8 @@ export default function ChatContainer({ fileName, chatId }: Props) {
 
       {/* Input Form */}
       <div className="border-t border-slate-200 bg-white p-2">
-        <form onSubmit={handleSubmit} className="flex items-end gap-2">
-          <div className="flex-1">
+        <form onSubmit={handleSubmit} className="flex items-end gap-2 mt-1">
+          <div className="flex-1 -mb-1">
             <textarea
               value={message}
               onChange={handleTextareaChange}
@@ -198,12 +198,12 @@ export default function ChatContainer({ fileName, chatId }: Props) {
           <Button
             type="submit"
             disabled={mutation.isPending || !message.trim()}
-            className="bg-orange-500 hover:bg-orange-600 mb-1.5 text-white h-10 w-10 p-0 flex-shrink-0">
+            className="bg-orange-500 hover:bg-orange-600 mb-0.5 text-white h-10 w-10 p-0 flex-shrink-0">
             <Send className="w-4 h-4" />
           </Button>
         </form>
-        <p className="text-[12px] text-slate-400">
-          Press Enter to send, Shift + Enter for new line
+        <p className="text-[11px] text-slate-400">
+          Press Enter to Send Chat. Shift + Enter for New Line
         </p>
       </div>
     </div>

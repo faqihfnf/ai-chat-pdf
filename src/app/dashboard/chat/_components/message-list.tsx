@@ -41,7 +41,7 @@ export default function MessageList({ messages, isSending, isLoading }: Props) {
   return (
     <div
       id="message-list"
-      className="flex-1 flex flex-col gap-4 p-4 overflow-auto bg-slate-50">
+      className="flex-1 flex flex-col gap-4 p-4 overflow-auto">
       {isLoading && (
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center">
