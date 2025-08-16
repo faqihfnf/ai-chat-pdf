@@ -1,23 +1,30 @@
 import { LoadToPinecone } from "@/lib/pinecone";
 import prisma from "@/lib/prisma";
 import { supabase } from "@/lib/supabase";
-import { auth } from "@clerk/nextjs/server";
-import { CloudCog } from "lucide-react";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    //# authentication user
+    // Authentication user
     const { userId } = await auth();
 
     if (!userId) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-    //# parse from data
+
+    // Dapatkan data user dari Clerk
+    const clerkUser = await currentUser();
+
+    if (!clerkUser) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+
+    // Parse form data
     const formData = await request.formData();
     const file = formData.get("file");
 
-    //# validate file
+    // Validate file
     if (!file) {
       return NextResponse.json(
         { message: "File is required" },
@@ -31,44 +38,55 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    //# Extract file details
+
+    // Extract file details
     const fileSize = file.size;
     const mimeType = file.type;
     const originalFileName = file.name;
     const fileName = `${originalFileName}-${Date.now()}`;
     const bucketName = "documents";
-    //# upload file to supabase
+
+    // Upload file to supabase
     const { error } = await supabase.storage
       .from(bucketName)
       .upload(fileName, file);
+
     if (error) {
       console.log(error);
       return NextResponse.json(error, { status: 500 });
     }
+
     const { data: publicUrlData } = await supabase.storage
       .from(bucketName)
       .getPublicUrl(fileName);
 
-    //# upload to pinecone
+    // Upload to pinecone
     await LoadToPinecone(fileName);
-    //# save document data to prisma
-    const user = await prisma.user.findUnique({
+
+    // Upsert user data (buat jika belum ada, update jika sudah ada)
+    await prisma.user.upsert({
       where: {
-        clerkId: userId,
+        id: userId,
+      },
+      update: {
+        email: clerkUser.emailAddresses[0]?.emailAddress || "",
+        name: clerkUser.fullName,
+      },
+      create: {
+        id: userId,
+        email: clerkUser.emailAddresses[0]?.emailAddress || "",
+        name: clerkUser.fullName,
       },
     });
 
-    if (!user) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
-    }
-
+    // Save document data to prisma
     await prisma.chat.create({
       data: {
         fileName: fileName,
         fileSize: fileSize,
         mimeType: mimeType,
         fileUrl: publicUrlData?.publicUrl,
-        userId: user.id,
+        userId: userId, // Langsung gunakan Clerk userId
       },
     });
 

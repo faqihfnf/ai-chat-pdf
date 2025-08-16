@@ -9,12 +9,13 @@ datasource db {
 }
 
 model User {
-  id       String    @id @default(uuid()) @db.Uuid
-  clerkId  String    @unique
-  email    String    @unique
-  name     String?
-  chat     Chat[]
-  messages Message[]
+  id        String    @id // Langsung gunakan Clerk userId sebagai primary key
+  email     String    @unique
+  name      String?
+  chat      Chat[]
+  messages  Message[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
   @@map("users")
 }
@@ -27,7 +28,7 @@ model Chat {
   fileUrl    String
   uploadedAt DateTime @default(now())
 
-  userId String @db.Uuid
+  userId String // Langsung reference ke Clerk userId
   user   User   @relation(fields: [userId], references: [id])
 
   messages Message[]
@@ -43,7 +44,7 @@ model Message {
   chatId String @db.Uuid
   chat   Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
 
-  userId String @db.Uuid
+  userId String // Langsung reference ke Clerk userId
   user   User   @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
