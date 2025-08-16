@@ -1,5 +1,4 @@
 "use client";
-import { Input } from "@/components/ui/input";
 import MessageList from "./message-list";
 import { Button } from "@/components/ui/button";
 import { Send, FileText, BotMessageSquare } from "lucide-react";
@@ -17,6 +16,15 @@ export default function ChatContainer({ fileName, chatId }: Props) {
   const [message, setMessage] = useState<string>("");
 
   const queryClient = useQueryClient();
+
+  // Function untuk reset textarea height
+  const resetTextareaHeight = () => {
+    const textarea = document.querySelector("textarea");
+    if (textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = "40px"; // Reset ke height yang sama dengan button (h-10 = 40px)
+    }
+  };
 
   const {
     data: messages = [],
@@ -50,7 +58,9 @@ export default function ChatContainer({ fileName, chatId }: Props) {
       if (!response.ok) {
         throw new Error("Failed to send message");
       }
+      const messageContent = message.trim(); // Simpan untuk reset
       setMessage("");
+      resetTextareaHeight(); // Reset height setelah clear message
       return await response.json();
     },
     onMutate: async () => {
@@ -121,6 +131,17 @@ export default function ChatContainer({ fileName, chatId }: Props) {
     mutation.mutate();
   }
 
+  // Function untuk handle textarea change dan auto-resize
+  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+
+    // Auto-resize textarea dengan max height yang lebih kecil
+    const target = e.target;
+    target.style.height = "auto";
+    target.style.height =
+      Math.min(Math.max(target.scrollHeight, 40), 100) + "px"; // Min 40px, max 100px
+  };
+
   if (error) {
     return (
       <div className="flex items-center justify-center h-full">
@@ -128,7 +149,7 @@ export default function ChatContainer({ fileName, chatId }: Props) {
           <div className="text-red-500 text-lg font-semibold mb-2">
             Error Loading Chat
           </div>
-          <p className="text-gray-600">{error.message}</p>
+          <p className="text-slate-600">{error.message}</p>
         </div>
       </div>
     );
@@ -137,19 +158,12 @@ export default function ChatContainer({ fileName, chatId }: Props) {
   return (
     <div className="flex flex-col h-full bg-white">
       {/* Header */}
-      <div className="border-b border-gray-200 bg-white p-2">
+      <div className="border-b border-slate-200 bg-white p-2">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-            <BotMessageSquare className="w-5 h-5 text-blue-600" />
+          <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
+            <BotMessageSquare className="w-5 h-5 text-indigo-600" />
           </div>
-          <div>
-            <h2 className="font-semibold text-gray-900">Chat with AI</h2>
-            <p className="text-sm text-gray-500 truncate max-w-[300px]">
-              {fileName
-                ? fileName.replace(/^.*-(\d+)$/, "").replace(/\.[^/.]+$/, "")
-                : "Document"}
-            </p>
-          </div>
+          <h2 className="font-semibold text-lg text-slate-900">Chat with AI</h2>
         </div>
       </div>
 
@@ -161,19 +175,22 @@ export default function ChatContainer({ fileName, chatId }: Props) {
       />
 
       {/* Input Form */}
-      <div className="border-t border-gray-200 bg-white p-4">
-        <form onSubmit={handleSubmit} className="flex items-end gap-3">
+      <div className="border-t border-slate-200 bg-white p-2">
+        <form onSubmit={handleSubmit} className="flex items-end gap-2">
           <div className="flex-1">
-            <Input
+            <textarea
               value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              onChange={handleTextareaChange}
               placeholder="Type your message here..."
               disabled={mutation.isPending}
-              className="resize-none border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+              className="w-full h-10 py-2 px-3 border border-slate-300 rounded-md resize-none focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 disabled:bg-slate-100 overflow-hidden"
+              rows={1}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
                   handleSubmit(e as any);
+                } else if (e.key === "Enter" && e.shiftKey) {
+                  // Allow default behavior for line break
                 }
               }}
             />
@@ -181,12 +198,11 @@ export default function ChatContainer({ fileName, chatId }: Props) {
           <Button
             type="submit"
             disabled={mutation.isPending || !message.trim()}
-            className="bg-blue-500 hover:bg-blue-600 text-white p-2.5"
-            size="sm">
+            className="bg-orange-500 hover:bg-orange-600 mb-1.5 text-white h-10 w-10 p-0 flex-shrink-0">
             <Send className="w-4 h-4" />
           </Button>
         </form>
-        <p className="text-xs text-gray-400 mt-2">
+        <p className="text-[12px] text-slate-400">
           Press Enter to send, Shift + Enter for new line
         </p>
       </div>
