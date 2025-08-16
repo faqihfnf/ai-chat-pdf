@@ -44,17 +44,17 @@ export default function MessageList({ messages, isSending, isLoading }: Props) {
       className="flex-1 flex flex-col gap-4 p-4 overflow-auto">
       {isLoading && (
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center">
+          <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
             <BotMessageSquare className="w-4 h-4 text-white" />
           </div>
           <div className="bg-white rounded-md px-4 py-2 shadow-sm">
             <div className="flex items-center gap-1">
-              <div className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce"></div>
+              <div className="w-2 h-2 bg-orange-400 rounded-full animate-bounce"></div>
               <div
-                className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce"
+                className="w-2 h-2 bg-orange-400 rounded-full animate-bounce"
                 style={{ animationDelay: "0.1s" }}></div>
               <div
-                className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce"
+                className="w-2 h-2 bg-orange-400 rounded-full animate-bounce"
                 style={{ animationDelay: "0.2s" }}></div>
             </div>
           </div>
@@ -75,8 +75,8 @@ export default function MessageList({ messages, isSending, isLoading }: Props) {
             className={clsx(
               "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1",
               message.role === MessageRole.USER
-                ? "bg-orange-500"
-                : "bg-indigo-500"
+                ? "bg-indigo-500"
+                : "bg-orange-500"
             )}>
             {message.role === MessageRole.USER ? (
               <User className="w-5 h-5 text-white" />
@@ -90,8 +90,8 @@ export default function MessageList({ messages, isSending, isLoading }: Props) {
             className={clsx(
               "rounded-2xl px-4 py-2 shadow-sm",
               message.role === MessageRole.USER
-                ? "bg-orange-50 rounded-md"
-                : "bg-indigo-50 rounded-md"
+                ? "bg-indigo-50 rounded-md"
+                : "bg-orange-50 rounded-md"
             )}>
             <div
               className={clsx(

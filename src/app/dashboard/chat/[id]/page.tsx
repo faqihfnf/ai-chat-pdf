@@ -3,13 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
 import { Chat } from "@prisma/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  BotMessageSquare,
-  FileText,
-  GripVertical,
-  Loader,
-  Trash,
-} from "lucide-react";
+import { FileText, GripVertical, Loader, Trash } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
@@ -26,6 +20,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import ChatContainer from "../_components/chat-container";
 import { Skeleton } from "@/components/ui/skeleton";
+import formatFileName from "@/lib/format-file-name";
 
 export default function DetailChat() {
   const { id } = useParams();
@@ -59,6 +54,8 @@ export default function DetailChat() {
     },
   });
 
+  const fileName = formatFileName(data?.fileName);
+
   if (isError) return <div>Error...</div>;
   return (
     <>
@@ -66,31 +63,31 @@ export default function DetailChat() {
         {isLoading ? (
           <>
             <Skeleton className="w-full h-14 bg-slate-50 flex items-center justify-center" />
-            <div className="flex items-center gap-3 mt-4">
-              <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+            <div className="flex items-center gap-3 mt-4 ml-3">
+              <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center">
                 <FileText className="w-4 h-4 text-white" />
               </div>
               <div className="bg-white rounded-md px-4 py-2 shadow-sm">
                 <div className="flex items-center gap-1">
-                  <div className="w-2 h-2 bg-orange-400 rounded-full animate-bounce"></div>
+                  <div className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce"></div>
                   <div
-                    className="w-2 h-2 bg-orange-400 rounded-full animate-bounce"
+                    className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce"
                     style={{ animationDelay: "0.1s" }}></div>
                   <div
-                    className="w-2 h-2 bg-orange-400 rounded-full animate-bounce"
+                    className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce"
                     style={{ animationDelay: "0.2s" }}></div>
                 </div>
               </div>
             </div>
           </>
         ) : (
-          <div className="h-full">
+          <div className="h-full border-b border-slate-200">
             <div className="flex flex-row justify-between p-2 gap-4 items-center">
               <div className="flex items-center gap-2">
-                <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-                  <FileText className="w-5 h-5 text-orange-600" />
+                <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
+                  <FileText className="w-5 h-5 text-indigo-600" />
                 </div>
-                <h2 className=" font-semibold">{data?.fileName}</h2>
+                <h2 className="font-semibold text-lg">{fileName}</h2>
               </div>
               <AlertDialog>
                 <AlertDialogTrigger asChild>

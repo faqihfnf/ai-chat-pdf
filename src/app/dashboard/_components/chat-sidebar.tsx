@@ -2,7 +2,9 @@
 import { Button } from "@/components/ui/button";
 import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
 import { Skeleton } from "@/components/ui/skeleton";
+import formatFileName from "@/lib/format-file-name";
 import { cn } from "@/lib/utils";
+import { chat } from "@pinecone-database/pinecone/dist/assistant/data/chat";
 import { Chat } from "@prisma/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GripVertical, Loader, Upload } from "lucide-react";
@@ -68,18 +70,18 @@ export default function ChatSidebar() {
 
             {/* 4. Ubah Link menjadi Button dengan onClick dan state loading */}
             <Button
-              className="w-full border-2 border-dotted border-slate-300 text-xs hover:text-indigo-300"
+              className="w-full border-2 border-dotted border-slate-300 text-xs hover:text-orange-300 hover:border-orange-300"
               onClick={open} // Panggil fungsi 'open' untuk memicu upload
               disabled={mutation.isPending} // Nonaktifkan tombol saat proses upload
             >
               {mutation.isPending ? (
                 <>
-                  <Loader className="h-4 w-4 animate-spin mr-2" />
+                  <Loader className="h-4 w-4 animate-spin" />
                   <span className="animate-pulse">Uploading PDF...</span>
                 </>
               ) : (
                 <>
-                  <Upload className="h-4 w-4 mr-2" />
+                  <Upload className="h-4 w-4" />
                   <span className="mt-0.5">Upload PDF</span>
                 </>
               )}
@@ -97,12 +99,12 @@ export default function ChatSidebar() {
                     key={chat.id}
                     href={`/dashboard/chat/${chat.id}`}
                     className={cn(
-                      "w-full truncate text-xs bg-slate-900/10 text-slate-100 hover:bg-slate-900/30 hover:text-indigo-300 p-2 mb-1 rounded-md",
+                      "w-full truncate text-xs bg-slate-900/10 text-slate-100 hover:bg-slate-900/30 hover:text-orange-300 p-2 mb-1 rounded-md",
                       {
-                        "bg-slate-900/40 text-indigo-400": chat.id === id,
+                        "bg-slate-900/40 text-orange-400": chat.id === id,
                       }
                     )}>
-                    {chat.fileName}
+                    {formatFileName(chat.fileName)}
                   </Link>
                 ))}
               </div>

@@ -1,11 +1,17 @@
 "use client";
 import MessageList from "./message-list";
 import { Button } from "@/components/ui/button";
-import { Send, FileText, BotMessageSquare } from "lucide-react";
+import {
+  Send,
+  FileText,
+  BotMessageSquare,
+  LayoutDashboard,
+} from "lucide-react";
 import { FormEvent, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Message, MessageRole } from "@prisma/client";
 import { toast } from "sonner";
+import Link from "next/link";
 
 type Props = {
   fileName: string;
@@ -159,11 +165,20 @@ export default function ChatContainer({ fileName, chatId }: Props) {
     <div className="flex flex-col h-full bg-white">
       {/* Header */}
       <div className="border-b border-slate-200 bg-white p-2">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
-            <BotMessageSquare className="w-5 h-5 text-indigo-600" />
+        <div className="flex items-center gap-3 justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+              <BotMessageSquare className="w-5 h-5 text-orange-600" />
+            </div>
+            <h2 className="font-semibold text-lg text-slate-900">
+              Chat with AI
+            </h2>
           </div>
-          <h2 className="font-semibold text-lg text-slate-900">Chat with AI</h2>
+          <Link href="/dashboard">
+            <Button size={"icon"} className="bg-green-500 hover:bg-green-600">
+              <LayoutDashboard />
+            </Button>
+          </Link>
         </div>
       </div>
 
