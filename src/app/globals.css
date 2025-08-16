@@ -126,3 +126,84 @@
     @apply px-4 w-full md:w-[800px] lg:w-[1000px] xl:w-[1280px] mx-auto;
   }
 }
+
+/* Posisikan toaster container di kanan atas */
+[data-sonner-toaster] {
+  top: 0 !important;
+  right: 0 !important;
+  bottom: auto !important;
+  left: auto !important;
+}
+
+/* Style untuk toast success */
+[data-sonner-toast][data-type="success"] {
+  background-color: #f0fdf4 !important;
+  border: 1px solid #86efac !important;
+  color: #16a34a !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: auto !important;
+  left: auto !important;
+}
+
+/* Optional: Style untuk toast lainnya */
+[data-sonner-toast][data-type="error"] {
+  background-color: #fef2f2 !important;
+  border: 1px solid #fca5a5 !important;
+  color: #dc2626 !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: auto !important;
+  left: auto !important;
+}
+
+[data-sonner-toast][data-type="warning"] {
+  background-color: #fffbeb !important;
+  border: 1px solid #fed7aa !important;
+  color: #d97706 !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: auto !important;
+  left: auto !important;
+}
+
+[data-sonner-toast][data-type="info"] {
+  background-color: #eff6ff !important;
+  border: 1px solid #93c5fd !important;
+  color: #2563eb !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: auto !important;
+  left: auto !important;
+}
+
+/* Animasi masuk dari atas untuk posisi top-right */
+[data-sonner-toast][data-mounted="true"] {
+  animation: slide-in-from-top 0.35s cubic-bezier(0.32, 0.72, 0, 1) !important;
+}
+
+[data-sonner-toast][data-removed="true"] {
+  animation: slide-out-to-right 0.2s cubic-bezier(0.32, 0.72, 0, 1) !important;
+}
+
+@keyframes slide-in-from-top {
+  from {
+    transform: translateY(-100%) translateX(0);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-out-to-right {
+  from {
+    transform: translateY(0) translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%) translateX(100%);
+    opacity: 0;
+  }
+}

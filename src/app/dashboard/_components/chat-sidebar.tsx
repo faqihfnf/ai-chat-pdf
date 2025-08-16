@@ -76,8 +76,10 @@ export default function ChatSidebar() {
             >
               {mutation.isPending ? (
                 <>
-                  <Loader className="h-4 w-4 animate-spin" />
-                  <span className="animate-pulse">Uploading PDF...</span>
+                  <Loader className="h-4 w-4 animate-spin text-orange-300" />
+                  <span className="animate-pulse text-orange-300">
+                    Uploading PDF...
+                  </span>
                 </>
               ) : (
                 <>

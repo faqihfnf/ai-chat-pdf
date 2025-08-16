@@ -45,16 +45,20 @@ export default function FileUpload() {
       <input {...getInputProps()} accept="application/pdf" />
       <>
         {mutation.isPending ? (
-          <Loader className="h-8 w-8 text-orange-700 animate-spin" />
+          <>
+            <Loader className="h-20 w-20 text-orange-700 animate-spin" />
+            <p className="text-md text-medium mt-2 text-orange-700 animate-pulse">
+              Uploading Document...
+            </p>
+          </>
         ) : (
-          <Image src="/upload.svg" width={100} height={100} alt="upload" />
-          // <Inbox className="h-20 w-20 text-orange-700" />
+          <>
+            <Image src="/upload.svg" width={100} height={100} alt="upload" />
+            <p className="text-md text-medium mt-2 animate-pulse">
+              Drag and drop your PDF here
+            </p>
+          </>
         )}
-        <p className="text-md text-medium mt-2">
-          {mutation.isPending
-            ? "Uploading Document..."
-            : "Drag and drop your PDF here"}
-        </p>
       </>
     </div>
   );

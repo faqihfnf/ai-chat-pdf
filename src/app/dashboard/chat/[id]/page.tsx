@@ -45,7 +45,7 @@ export default function DetailChat() {
       return await res.json();
     },
     onSuccess: () => {
-      toast.success("Chat deleted successfully");
+      toast.error("Chat deleted successfully");
       queryClient.invalidateQueries({ queryKey: ["chats"] });
       router.push("/dashboard");
     },
