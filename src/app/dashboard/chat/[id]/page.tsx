@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
 import { Chat } from "@prisma/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { GripVertical, Loader, Trash } from "lucide-react";
+import { FileText, GripVertical, Loader, Trash } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
@@ -55,13 +55,18 @@ export default function DetailChat() {
   if (isError) return <div>Error...</div>;
   return (
     <>
-      <ResizablePanel defaultSize={55} minSize={30} className="h-full">
+      <ResizablePanel defaultSize={40} minSize={30} className="h-full">
         {isLoading ? (
           "Loading..."
         ) : (
           <div className="h-full">
-            <div className="flex flex-row justify-between px-4 py-2 gap-4 items-center">
-              <p className=" font-semibold">{data?.fileName}</p>
+            <div className="flex flex-row justify-between p-2 gap-4 items-center">
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                  <FileText className="w-5 h-5 text-orange-600" />
+                </div>
+                <h2 className=" font-semibold">{data?.fileName}</h2>
+              </div>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button
@@ -100,6 +105,7 @@ export default function DetailChat() {
           </div>
         )}
       </ResizablePanel>
+
       {/* Handler Resizer */}
       <div className="relative flex items-center">
         <ResizableHandle className="bg-slate-100 w-0.5 h-full" />
@@ -110,7 +116,7 @@ export default function DetailChat() {
         </div>
       </div>
 
-      <ResizablePanel defaultSize={30} minSize={20} className="h-full">
+      <ResizablePanel defaultSize={50} minSize={20} className="h-full">
         <ChatContainer
           fileName={data?.fileName as string}
           chatId={id as string}

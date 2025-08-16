@@ -64,7 +64,6 @@ export default function ChatSidebar() {
       <ResizablePanel defaultSize={15} minSize={10}>
         <div className="h-full bg-slate-700 flex flex-col items-center">
           <div className="p-4 w-full">
-            {/* 3. Render input tersembunyi */}
             <input {...getInputProps()} />
 
             {/* 4. Ubah Link menjadi Button dengan onClick dan state loading */}
@@ -76,7 +75,7 @@ export default function ChatSidebar() {
               {mutation.isPending ? (
                 <>
                   <Loader className="h-4 w-4 animate-spin mr-2" />
-                  <span>Uploading...</span>
+                  <span className="animate-pulse">Uploading PDF...</span>
                 </>
               ) : (
                 <>

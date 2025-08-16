@@ -26,7 +26,7 @@ export default function Home() {
           mode="modal"
           signUpFallbackRedirectUrl={"/dashboard"}
           signUpForceRedirectUrl={"/dashboard"}>
-          <Button>
+          <Button size={"lg"}>
             <Image src="/google.svg" width={15} height={15} alt="google" />
             Login with Google
           </Button>
