@@ -3,7 +3,13 @@ import { Button } from "@/components/ui/button";
 import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
 import { Chat } from "@prisma/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { FileText, GripVertical, Loader, Trash } from "lucide-react";
+import {
+  BotMessageSquare,
+  FileText,
+  GripVertical,
+  Loader,
+  Trash,
+} from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
@@ -19,6 +25,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import ChatContainer from "../_components/chat-container";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function DetailChat() {
   const { id } = useParams();
@@ -57,7 +64,25 @@ export default function DetailChat() {
     <>
       <ResizablePanel defaultSize={40} minSize={30} className="h-full">
         {isLoading ? (
-          "Loading..."
+          <>
+            <Skeleton className="w-full h-14 bg-slate-200 flex items-center justify-center" />
+            <div className="flex items-center gap-3 mt-4">
+              <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center">
+                <FileText className="w-4 h-4 text-white" />
+              </div>
+              <div className="bg-white rounded-md px-4 py-2 shadow-sm">
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce"></div>
+                  <div
+                    className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce"
+                    style={{ animationDelay: "0.1s" }}></div>
+                  <div
+                    className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce"
+                    style={{ animationDelay: "0.2s" }}></div>
+                </div>
+              </div>
+            </div>
+          </>
         ) : (
           <div className="h-full">
             <div className="flex flex-row justify-between p-2 gap-4 items-center">
