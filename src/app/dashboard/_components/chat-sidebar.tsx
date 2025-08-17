@@ -125,7 +125,7 @@ export default function ChatSidebar() {
 
   return (
     <>
-      <ResizablePanel defaultSize={15} minSize={10}>
+      <ResizablePanel defaultSize={15} minSize={12}>
         <div className="h-full bg-slate-700 flex flex-col items-center">
           <div className="p-4 w-full">
             <input {...getInputProps()} />
@@ -178,10 +178,14 @@ export default function ChatSidebar() {
                       <Button
                         size={"icon"}
                         onClick={(e) => handleDeleteClick(e, chat.id)}
-                        className="absolute right-1 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-transparent hover:bg-transparent text-orange-300 hover:text-red-500"
-                        title="Delete chat"
+                        disabled={deleteMutation.isPending && chatToDelete === chat.id}
+                        className={cn(
+                          "absolute right-0 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-200",
+                          deleteMutation.isPending && chatToDelete === chat.id ? "bg-transparent cursor-not-allowed" : "bg-transparent hover:bg-transparent text-orange-300 hover:text-red-500"
+                        )}
+                        title={deleteMutation.isPending && chatToDelete === chat.id ? "Deleting..." : "Delete chat"}
                       >
-                        <Trash className="mb-1" />
+                        <span className="mb-1">{deleteMutation.isPending && chatToDelete === chat.id ? <Loader className="h-3 w-3 animate-spin" /> : <Trash className="h-3 w-3 " />}</span>
                       </Button>
                     </div>
                   ))}
@@ -210,7 +214,7 @@ export default function ChatSidebar() {
                 <div className={cn("h-1.5 rounded-full transition-all duration-300", isMaxReached ? "bg-red-400" : remainingCredits === 1 ? "bg-amber-400" : "bg-blue-400")} style={{ width: `${(usedChats / MAX_CHATS) * 100}%` }} />
               </div>
 
-              <div className="text-[10px] opacity-75">{isMaxReached ? "⚠️ Maximum limit reached" : remainingCredits === 1 ? "⚠️ 1 document remaining" : `${remainingCredits} documents remaining`}</div>
+              <div className="text-[9px] opacity-75">{isMaxReached ? "⚠️ Max limit reached" : remainingCredits === 1 ? "⚠️ 1 docs remaining" : `${remainingCredits} docs remaining`}</div>
             </div>
           </div>
         </div>
