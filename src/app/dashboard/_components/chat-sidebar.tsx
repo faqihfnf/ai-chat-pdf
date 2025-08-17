@@ -6,12 +6,13 @@ import formatFileName from "@/lib/format-file-name";
 import { cn } from "@/lib/utils";
 import { Chat } from "@prisma/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { GripVertical, Loader, Upload, AlertCircle, TriangleAlert } from "lucide-react";
+import { GripVertical, Loader, Upload, AlertCircle, Trash } from "lucide-react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import React from "react";
+import { useParams, useRouter } from "next/navigation";
+import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 
 export default function ChatSidebar() {
   const MAX_CHATS = 3; // Batas maksimal chat per user
@@ -25,14 +26,59 @@ export default function ChatSidebar() {
   });
 
   const { id } = useParams();
+  const router = useRouter();
   const queryClient = useQueryClient();
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [chatToDelete, setChatToDelete] = useState<string | null>(null);
 
   // Hitung sisa credit
   const usedChats = data?.length || 0;
   const remainingCredits = MAX_CHATS - usedChats;
   const isMaxReached = usedChats >= MAX_CHATS;
 
-  const mutation = useMutation({
+  // Delete mutation
+  const deleteMutation = useMutation({
+    mutationFn: async (chatId: string) => {
+      const res = await fetch(`/api/chat/${chatId}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) {
+        throw new Error("Failed to delete chat");
+      }
+      return await res.json();
+    },
+    onSuccess: () => {
+      toast.success("Chat deleted successfully");
+      queryClient.invalidateQueries({ queryKey: ["chats"] });
+      // Redirect ke dashboard jika chat yang dihapus sedang aktif
+      if (chatToDelete === id) {
+        router.push("/dashboard");
+      }
+      setDeleteDialogOpen(false);
+      setChatToDelete(null);
+    },
+    onError: () => {
+      toast.error("Failed to delete chat");
+      setDeleteDialogOpen(false);
+      setChatToDelete(null);
+    },
+  });
+
+  const handleDeleteClick = (e: React.MouseEvent, chatId: string) => {
+    e.preventDefault(); // Prevent Link navigation
+    e.stopPropagation();
+    setChatToDelete(chatId);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (chatToDelete) {
+      deleteMutation.mutate(chatToDelete);
+    }
+  };
+
+  // Upload mutation
+  const uploadMutation = useMutation({
     mutationFn: async (file: File) => {
       // Cek limit sebelum upload
       if (isMaxReached) {
@@ -69,29 +115,30 @@ export default function ChatSidebar() {
           toast.error("Maximum chat limit reached! You can only have 3 documents.");
           return;
         }
-        mutation.mutate(acceptedFiles[0]);
+        uploadMutation.mutate(acceptedFiles[0]);
       }
     },
-    noClick: true,
+    noClick: true, // Mencegah pembukaan dialog file saat area lain diklik
     noKeyboard: true,
     disabled: isMaxReached, // Disable dropzone jika sudah maksimal
   });
 
   return (
     <>
-      <ResizablePanel defaultSize={15} minSize={12}>
+      <ResizablePanel defaultSize={15} minSize={10}>
         <div className="h-full bg-slate-700 flex flex-col items-center">
           <div className="p-4 w-full">
             <input {...getInputProps()} />
+            {/* Upload Button */}
             <Button
               className={cn(
                 "w-full border-2 border-dotted text-xs transition-all duration-200",
                 isMaxReached ? "border-red-400 text-red-400 bg-red-50/10 cursor-not-allowed opacity-60" : "border-slate-300 hover:text-orange-300 hover:border-orange-300"
               )}
               onClick={isMaxReached ? undefined : open}
-              disabled={mutation.isPending || isMaxReached}
+              disabled={uploadMutation.isPending || isMaxReached}
             >
-              {mutation.isPending ? (
+              {uploadMutation.isPending ? (
                 <>
                   <Loader className="h-4 w-4 animate-spin text-orange-300" />
                   <span className="animate-pulse text-orange-300">Uploading PDF...</span>
@@ -117,15 +164,26 @@ export default function ChatSidebar() {
               <>
                 <div className="w-full flex flex-col gap-2">
                   {data?.map((chat: Chat) => (
-                    <Link
-                      key={chat.id}
-                      href={`/dashboard/chat/${chat.id}`}
-                      className={cn("w-full truncate text-xs bg-slate-900/10 text-slate-100 hover:bg-slate-900/30 hover:text-orange-300 p-2 mb-1 rounded-md", {
-                        "bg-slate-900/40 text-orange-400": chat.id === id,
-                      })}
-                    >
-                      {formatFileName(chat.fileName)}
-                    </Link>
+                    <div key={chat.id} className="relative group">
+                      <Link
+                        href={`/dashboard/chat/${chat.id}`}
+                        className={cn("w-full truncate text-xs bg-slate-900/10 text-slate-100 hover:bg-slate-900/30 hover:text-orange-300 p-2 mb-1 rounded-md flex items-center justify-between pr-8", {
+                          "bg-slate-900/40 text-orange-400": chat.id === id,
+                        })}
+                      >
+                        <span className="truncate">{formatFileName(chat.fileName)}</span>
+                      </Link>
+
+                      {/* Delete Button */}
+                      <Button
+                        size={"icon"}
+                        onClick={(e) => handleDeleteClick(e, chat.id)}
+                        className="absolute right-1 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-transparent hover:bg-transparent text-orange-300 hover:text-red-500"
+                        title="Delete chat"
+                      >
+                        <Trash className="mb-1" />
+                      </Button>
+                    </div>
                   ))}
                 </div>
               </>
@@ -152,21 +210,7 @@ export default function ChatSidebar() {
                 <div className={cn("h-1.5 rounded-full transition-all duration-300", isMaxReached ? "bg-red-400" : remainingCredits === 1 ? "bg-amber-400" : "bg-blue-400")} style={{ width: `${(usedChats / MAX_CHATS) * 100}%` }} />
               </div>
 
-              <div className="text-[9px] opacity-75">
-                {isMaxReached ? (
-                  <div className="flex items-center gap-1 text-red-400">
-                    <AlertCircle className="h-4 w-4" />
-                    <p className="mt-1.5">Max limit reached</p>
-                  </div>
-                ) : remainingCredits === 1 ? (
-                  <div className="flex items-center gap-1 text-yellow-400">
-                    <TriangleAlert className="h-4 w-4" />
-                    <p className="mt-1.5">1 docs remaining</p>
-                  </div>
-                ) : (
-                  `${remainingCredits} docs remaining`
-                )}
-              </div>
+              <div className="text-[10px] opacity-75">{isMaxReached ? "⚠️ Maximum limit reached" : remainingCredits === 1 ? "⚠️ 1 document remaining" : `${remainingCredits} documents remaining`}</div>
             </div>
           </div>
         </div>
@@ -177,10 +221,33 @@ export default function ChatSidebar() {
         <ResizableHandle className="bg-slate-100 w-0.5 h-full" />
         <div className="absolute inset-0 flex items-center pointer-events-none justify-center">
           <div className="bg-slate-100 py-1 rounded">
-            <GripVertical className="h-4 w-4 text-slate-900" />
+            <GripVertical className="h-4 w-4 text-slate-900 " />
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Apakah Anda yakin?</AlertDialogTitle>
+            <AlertDialogDescription>Tindakan ini tidak dapat dibatalkan. Ini akan menghapus chat secara permanen dari server kami.</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleteMutation.isPending}>Batal</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} disabled={deleteMutation.isPending} className="bg-red-600 hover:bg-red-700">
+              {deleteMutation.isPending ? (
+                <>
+                  <Loader className="h-4 w-4 animate-spin mr-2" />
+                  Menghapus...
+                </>
+              ) : (
+                "Hapus"
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

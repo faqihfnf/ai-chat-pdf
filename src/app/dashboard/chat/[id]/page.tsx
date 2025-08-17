@@ -7,17 +7,7 @@ import { FileText, GripVertical, Loader, Trash } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import ChatContainer from "../_components/chat-container";
 import { Skeleton } from "@/components/ui/skeleton";
 import formatFileName from "@/lib/format-file-name";
@@ -45,7 +35,7 @@ export default function DetailChat() {
       return await res.json();
     },
     onSuccess: () => {
-      toast.error("Chat deleted successfully");
+      toast.success("Chat deleted successfully");
       queryClient.invalidateQueries({ queryKey: ["chats"] });
       router.push("/dashboard");
     },
@@ -70,12 +60,8 @@ export default function DetailChat() {
               <div className="bg-white rounded-md px-4 py-2 shadow-sm">
                 <div className="flex items-center gap-1">
                   <div className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce"></div>
-                  <div
-                    className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce"
-                    style={{ animationDelay: "0.1s" }}></div>
-                  <div
-                    className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce"
-                    style={{ animationDelay: "0.2s" }}></div>
+                  <div className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: "0.1s" }}></div>
+                  <div className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
                 </div>
               </div>
             </div>
@@ -91,39 +77,25 @@ export default function DetailChat() {
               </div>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button
-                    disabled={mutation.isPending}
-                    size={"icon"}
-                    variant={"destructive"}>
-                    {mutation.isPending ? (
-                      <Loader className="animate-spin" />
-                    ) : (
-                      <Trash />
-                    )}
+                  <Button disabled={mutation.isPending} size={"icon"} variant={"destructive"}>
+                    {mutation.isPending ? <Loader className="animate-spin" /> : <Trash />}
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
                     <AlertDialogTitle>Apakah Anda yakin?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Tindakan ini tidak dapat dibatalkan. Ini akan menghapus
-                      chat secara permanen dari server kami.
-                    </AlertDialogDescription>
+                    <AlertDialogDescription>Tindakan ini tidak dapat dibatalkan. Ini akan menghapus chat secara permanen dari server kami.</AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Batal</AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={() => mutation.mutate()}
-                      className={"bg-red-600 hover:bg-red-700"}>
+                    <AlertDialogAction onClick={() => mutation.mutate()} className={"bg-red-600 hover:bg-red-700"}>
                       Hapus
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
             </div>
-            <iframe
-              src={`${data?.fileUrl}#view=fitH`}
-              className="w-full h-full"></iframe>
+            <iframe src={`${data?.fileUrl}#view=fitH`} className="w-full h-full"></iframe>
           </div>
         )}
       </ResizablePanel>
@@ -139,10 +111,7 @@ export default function DetailChat() {
       </div>
 
       <ResizablePanel defaultSize={50} minSize={20} className="h-full">
-        <ChatContainer
-          fileName={data?.fileName as string}
-          chatId={id as string}
-        />
+        <ChatContainer fileName={data?.fileName as string} chatId={id as string} />
       </ResizablePanel>
     </>
   );
