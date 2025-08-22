@@ -1,5 +1,4 @@
 "use client";
-import MessageList from "./message-list";
 import { Button } from "@/components/ui/button";
 import { Send, BotMessageSquare, LayoutDashboard } from "lucide-react";
 import { FormEvent, useState } from "react";
@@ -7,6 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Message, MessageRole } from "@prisma/client";
 import { toast } from "sonner";
 import Link from "next/link";
+import MessageList from "./message-list";
 
 type Props = {
   fileName: string;
@@ -115,10 +115,7 @@ export default function ChatContainer({ fileName, chatId }: Props) {
     onError: (error, variables, context) => {
       // Rollback optimistic update
       if (context?.previousMessages) {
-        queryClient.setQueryData(
-          ["messages", chatId],
-          context.previousMessages
-        );
+        queryClient.setQueryData(["messages", chatId], context.previousMessages);
       }
       toast.error("Failed to send message");
       console.error("Send message error:", error);
@@ -138,17 +135,14 @@ export default function ChatContainer({ fileName, chatId }: Props) {
     // Auto-resize textarea dengan max height yang lebih kecil
     const target = e.target;
     target.style.height = "auto";
-    target.style.height =
-      Math.min(Math.max(target.scrollHeight, 40), 100) + "px"; // Min 40px, max 100px
+    target.style.height = Math.min(Math.max(target.scrollHeight, 40), 100) + "px"; // Min 40px, max 100px
   };
 
   if (error) {
     return (
       <div className="flex items-center justify-center h-full">
         <div className="text-center p-6">
-          <div className="text-red-500 text-lg font-semibold mb-2">
-            Error Loading Chat
-          </div>
+          <div className="text-red-500 text-lg font-semibold mb-2">Error Loading Chat</div>
           <p className="text-slate-600">{error.message}</p>
         </div>
       </div>
@@ -164,9 +158,7 @@ export default function ChatContainer({ fileName, chatId }: Props) {
             <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
               <BotMessageSquare className="w-5 h-5 text-orange-600" />
             </div>
-            <h2 className="font-semibold text-lg text-slate-900">
-              Chat with AI
-            </h2>
+            <h2 className="font-semibold text-lg text-slate-900">Chat with AI</h2>
           </div>
           <Link href="/dashboard">
             <Button size={"icon"} className="bg-green-500 hover:bg-green-600">
@@ -177,11 +169,7 @@ export default function ChatContainer({ fileName, chatId }: Props) {
       </div>
 
       {/* Messages */}
-      <MessageList
-        messages={messages}
-        isSending={mutation.isPending}
-        isLoading={isLoading}
-      />
+      <MessageList messages={messages} isSending={mutation.isPending} isLoading={isLoading} />
 
       {/* Input Form */}
       <div className="border-t border-slate-200 bg-white p-2">
@@ -204,16 +192,11 @@ export default function ChatContainer({ fileName, chatId }: Props) {
               }}
             />
           </div>
-          <Button
-            type="submit"
-            disabled={mutation.isPending || !message.trim()}
-            className="bg-orange-500 hover:bg-orange-600 mb-0.5 text-white h-10 w-10 p-0 flex-shrink-0">
+          <Button type="submit" disabled={mutation.isPending || !message.trim()} className="bg-orange-500 hover:bg-orange-600 mb-0.5 text-white h-10 w-10 p-0 flex-shrink-0">
             <Send className="w-4 h-4" />
           </Button>
         </form>
-        <p className="text-[11px] text-slate-400">
-          Press Enter to Send Chat. Shift + Enter for New Line
-        </p>
+        <p className="text-[11px] text-slate-400">Press Enter to Send Chat. Shift + Enter for New Line</p>
       </div>
     </div>
   );

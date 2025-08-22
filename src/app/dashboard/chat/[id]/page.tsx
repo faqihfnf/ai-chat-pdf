@@ -8,9 +8,9 @@ import { useParams, useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import ChatContainer from "../_components/chat-container";
 import { Skeleton } from "@/components/ui/skeleton";
 import formatFileName from "@/lib/format-file-name";
+import ChatContainer from "@/components/sections/dashboard/chat/chat-container";
 
 export default function DetailChat() {
   const { id } = useParams();

@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import Navbar from "@/components/sections/Navbar";
 import { Toaster } from "sonner";
-import QueryProvider from "@/components/sections/query-provider";
-import Footer from "@/components/sections/Footer";
+import QueryProvider from "@/components/layout/query-provider";
+import Footer from "@/components/layout/Footer";
+import Navbar from "@/components/layout/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
