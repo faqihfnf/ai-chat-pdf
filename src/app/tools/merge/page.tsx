@@ -34,15 +34,6 @@ export default function MergePage() {
       <div className="mt-8 max-w-4xl mx-auto">
         <FileUploadZone onDrop={handleFileUpload} isUploading={isUploading} />
       </div>
-
-      {/* <div className="w-full h-full relative">
-        <div className="w-full h-full border-dashed border-1 flex flex-col items-center justify-center rounded-lg p-20 transition-all duration-300 ease-in-out">
-          <div className="p-4 border-1 w-full h-[350px] border-slate-200 rounded-lg shadow-[0_0_15px_0_var(--tw-shadow-color)] hover:shadow-[0_0_25px_0_var(--tw-shadow-color)] shadow-orange-100 hover:shadow-orange-200 transition-all duration-300 ease-in-out">
-            <Image src="/upload.svg" width={100} height={100} alt="upload" />
-            <p className="text-md font-medium mt-4 animate-pulse">Drag and drop your PDF here</p>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 }
