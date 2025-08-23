@@ -55,7 +55,7 @@ export const pdfTools: PdfTool[] = [
   {
     href: "/tools/rotate",
     title: "Rotate PDF",
-    description: "Rotate your PDF documents by 90 degrees, 180 degrees, or 270 degrees.",
+    description: "Rotate your PDF documents to the desired orientation.",
     icon: RotateCcw,
     bgColor: "bg-pink-100",
     textColor: "text-pink-600",

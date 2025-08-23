@@ -9,7 +9,7 @@ export default function ToolCard({ tool }: { tool: PdfTool }) {
 
   return (
     <Link href={href} className="group">
-      <div className={`relative flex h-full flex-col justify-between p-6 bg-white border rounded-lg shadow-sm ${tool.shadowColor} transition-all duration-300 hover:shadow-lg hover:-translate-y-1`}>
+      <div className={`relative flex h-full flex-col justify-between p-5 bg-white border rounded-md shadow-sm ${tool.shadowColor} transition-all duration-300 hover:shadow-lg hover:-translate-y-1`}>
         <div>
           {/* Badge "Coming Soon" */}
           {tool.isComingSoon && (
@@ -23,7 +23,7 @@ export default function ToolCard({ tool }: { tool: PdfTool }) {
               <Icon strokeWidth={2} className="w-6 h-6" />
             </div>
           </div>
-          <h2 className="text-lg font-semibold mt-4">{tool.title}</h2>
+          <h2 className="text-lg font-semibold text-slate-900 mt-4">{tool.title}</h2>
           <p className="text-sm text-muted-foreground mt-1">{tool.description}</p>
         </div>
       </div>

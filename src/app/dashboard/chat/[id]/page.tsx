@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import formatFileName from "@/lib/format-file-name";
-import ChatContainer from "@/components/sections/dashboard/chat/chat-container";
+import ChatContainer from "@/components/sections/dashboard/chat/ChatContainer";
 
 export default function DetailChat() {
   const { id } = useParams();

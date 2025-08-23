@@ -3,9 +3,10 @@ import { Inter, Macondo, Poppins } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
-import QueryProvider from "@/components/layout/query-provider";
+import QueryProvider from "@/components/layout/QueryProvider";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
+import { ThemeProvider } from "@/components/layout/ThemeProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,12 +34,14 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <QueryProvider>
-        <html lang="en" className={macondo.variable}>
+        <html lang="en" className={macondo.variable} suppressHydrationWarning>
           <body className={` ${poppins.className} ${inter.className}  antialiased`}>
-            <Navbar />
-            <main className="min-h-screen">{children}</main>
-            <Toaster />
-            <Footer />
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+              <Navbar />
+              <main className="min-h-screen">{children}</main>
+              <Toaster />
+              <Footer />
+            </ThemeProvider>
           </body>
         </html>
       </QueryProvider>

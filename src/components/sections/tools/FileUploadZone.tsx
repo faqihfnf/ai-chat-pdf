@@ -154,8 +154,8 @@ export default function FileUploadZone({
         shadow-[0_0_15px_0_var(--tw-shadow-color)] hover:shadow-[0_0_25px_0_var(--tw-shadow-color)] 
         shadow-orange-100 hover:shadow-orange-200
         ${
-          disabled || isMaxReached // TAMBAHAN: tambahkan kondisi isMaxReached
-            ? "border-gray-300 bg-gray-50 cursor-not-allowed opacity-70"
+          disabled || isMaxReached
+            ? "border-slate-300 bg-slate-50 cursor-not-allowed opacity-70"
             : isDragActive
             ? "bg-gradient-to-tr from-amber-100 via-orange-100 to-rose-200 border-orange-400 cursor-pointer"
             : "hover:bg-gradient-to-tr hover:from-amber-100 hover:via-orange-100 hover:to-rose-200 border-orange-400 cursor-pointer"
@@ -163,7 +163,7 @@ export default function FileUploadZone({
       `}
     >
       {/* Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-amber-100/50 via-orange-100/50 to-rose-200/50 -z-10 rounded-2xl opacity-80"></div>
+      <div className="absolute inset-0 bg-gradient-to-tr from-amber-100/50 via-orange-100/50 to-rose-200/50  dark:from-amber-200 dark:via-orange-200 dark:to-rose-300 -z-10 rounded-2xl"></div>
 
       <input {...getInputProps()} />
 
@@ -171,18 +171,18 @@ export default function FileUploadZone({
         <>
           <Loader className="h-16 w-16 text-orange-600 animate-spin mb-4" />
           <p className="text-lg font-medium text-orange-700">Uploading...</p>
-          <p className="text-sm text-gray-500 mt-1">Please wait while we process your documents.</p>
+          <p className="text-sm text-slate-500 mt-1">Please wait while we process your documents.</p>
         </>
       ) : isMaxReached ? ( // TAMBAHAN: tampilan ketika sudah maksimum
         <>
           <div className="w-24 h-24 rounded-full flex items-center justify-center mb-4 opacity-50">
             <Image src="/upload.svg" width={100} height={100} alt="upload" />
           </div>
-          <p className="text-2xl font-semibold text-gray-500">Maximum files reached</p>
-          <p className="text-md text-gray-400 mt-2">
+          <p className="text-2xl font-semibold text-slate-500">Maximum files reached</p>
+          <p className="text-md text-slate-400 mt-2">
             You have uploaded {currentFileCount}/{finalMaxFiles} files
           </p>
-          <p className="text-sm text-gray-400 mt-1 mb-8">Remove some files to upload more</p>
+          <p className="text-sm text-slate-400 mt-1 mb-8">Remove some files to upload more</p>
         </>
       ) : (
         <>
@@ -191,13 +191,13 @@ export default function FileUploadZone({
             <Image src="/upload.svg" width={100} height={100} alt="upload" />
           </div>
 
-          <p className="text-2xl font-semibold text-gray-700">
+          <p className="text-2xl font-semibold text-slate-700">
             Drag and drop your {acceptedTypesText} {multiple ? "files" : "file"} here
           </p>
-          <p className="text-md text-gray-500 mt-2">or click to browse your files</p>
+          <p className="text-md text-slate-500 mt-2">or click to browse your files</p>
 
           {/* File constraints info */}
-          <div className="mt-5 flex flex-row gap-5 mb-4 text-xs text-gray-400 space-y-1">
+          <div className="mt-5 flex flex-row gap-5 mb-4 text-xs text-slate-400 space-y-1">
             <p>• Accepted formats: {acceptedTypesText}</p>
             {multiple && (
               <p>

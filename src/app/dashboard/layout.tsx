@@ -1,8 +1,8 @@
 "use client";
 import { ResizablePanelGroup } from "@/components/ui/resizable";
-import { UseMediaQuery } from "@/hooks/use-media-query";
+import { UseMediaQuery } from "@/hooks/useMediaQuery";
 import React from "react";
-import ChatSidebar from "../../components/sections/dashboard/chat-sidebar";
+import ChatSidebar from "../../components/sections/dashboard/ChatSidebar";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const isMobile = UseMediaQuery("(max-width: 768px)");

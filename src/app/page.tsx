@@ -70,7 +70,7 @@ export default function Home() {
       </div>
 
       {/* Hero image */}
-      <motion.div className="mt-8 mb-12">
+      <motion.div className="mt-8 mb-12 px-2 sm:px-4">
         <motion.div className="relative group" whileHover={{ y: -10 }} transition={{ type: "spring", stiffness: 300 }}>
           <motion.div
             className="absolute -inset-1 bg-gradient-to-r from-orange-300 via-rose-300 to-amber-300 rounded-2xl blur opacity-75 group-hover:opacity-100"

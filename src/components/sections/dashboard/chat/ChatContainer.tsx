@@ -6,7 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Message, MessageRole } from "@prisma/client";
 import { toast } from "sonner";
 import Link from "next/link";
-import MessageList from "./message-list";
+import MessageList from "./MessageList";
 
 type Props = {
   fileName: string;

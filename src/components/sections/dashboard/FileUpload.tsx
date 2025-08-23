@@ -71,11 +71,11 @@ export default function FileUpload() {
       <div
         {...getRootProps()}
         className={`
-          w-full h-full border-dashed border-1 flex flex-col items-center justify-center rounded-lg p-20 transition-all duration-300 ease-in-out
+          w-full h-full border-dashed border-1 flex flex-col items-center justify-center rounded-lg p-20 transition-all duration-300 ease-in-out shadow-[0_0_15px_0_var(--tw-shadow-color)] hover:shadow-[0_0_25px_0_var(--tw-shadow-color)] shadow-orange-100 hover:shadow-orange-200
           ${
             isMaxReached
               ? "bg-gradient-to-tr from-red-50/30 via-red-100/30 to-red-200/30 border-red-400 cursor-not-allowed opacity-60"
-              : "bg-gradient-to-tr from-amber-100/50 via-orange-100/50 to-rose-200/50 hover:bg-gradient-to-tr hover:from-amber-100 hover:via-orange-100 hover:to-rose-200 border-orange-400 cursor-pointer"
+              : "bg-gradient-to-tr from-amber-100/50 via-orange-100/50 to-rose-200/50 hover:bg-gradient-to-tr hover:from-amber-100 hover:via-orange-100 hover:to-rose-200 dark:from-amber-200 dark:via-orange-200 dark:to-rose-300 border-orange-400 cursor-pointer dark:hover:bg-gradient-to-tr dark:hover:from-amber-100 dark:hover:via-orange-100 dark:hover:to-rose-100"
           }
         `}
       >
@@ -103,7 +103,7 @@ export default function FileUpload() {
         ) : (
           <>
             <Image src="/upload.svg" width={100} height={100} alt="upload" />
-            <p className="text-md font-medium mt-4 animate-pulse">Drag and drop your PDF here</p>
+            <p className="text-md font-medium mt-4 animate-pulse text-slate-900">Drag and drop your PDF here</p>
             <p className="text-sm text-gray-600 mt-1">{remainingCredits === 1 ? "⚠️ Last document remaining" : `${remainingCredits} documents remaining`}</p>
           </>
         )}

@@ -133,7 +133,9 @@ export default function ChatSidebar() {
             <Button
               className={cn(
                 "w-full border-2 border-dotted text-xs transition-all duration-200",
-                isMaxReached ? "border-red-400 text-red-400 bg-red-50/10 cursor-not-allowed opacity-60" : "border-slate-300 hover:text-orange-300 hover:border-orange-300"
+                isMaxReached
+                  ? "border-red-400 text-red-400 bg-red-50/10 cursor-not-allowed opacity-60"
+                  : "border-slate-300 hover:text-orange-300 hover:border-orange-300 dark:border-slate-800 dark:hover:text-orange-500 dark:hover:border-orange-500"
               )}
               onClick={isMaxReached ? undefined : open}
               disabled={uploadMutation.isPending || isMaxReached}
@@ -210,8 +212,8 @@ export default function ChatSidebar() {
               </div>
 
               {/* Progress Bar */}
-              <div className="w-full bg-slate-800/50 rounded-full h-1.5 mb-2">
-                <div className={cn("h-1.5 rounded-full transition-all duration-300", isMaxReached ? "bg-red-400" : remainingCredits === 1 ? "bg-amber-400" : "bg-blue-400")} style={{ width: `${(usedChats / MAX_CHATS) * 100}%` }} />
+              <div className="w-full bg-slate-800/50 rounded-md h-1.5 mb-2">
+                <div className={cn("h-1.5 rounded-md transition-all duration-300", isMaxReached ? "bg-red-400" : remainingCredits === 1 ? "bg-amber-400" : "bg-blue-400")} style={{ width: `${(usedChats / MAX_CHATS) * 100}%` }} />
               </div>
 
               <div className="text-[9px] opacity-75">{isMaxReached ? "⚠️ Max limit reached" : remainingCredits === 1 ? "⚠️ 1 docs remaining" : `${remainingCredits} docs remaining`}</div>
@@ -222,7 +224,7 @@ export default function ChatSidebar() {
 
       {/* Handler Resizer */}
       <div className="relative flex items-center">
-        <ResizableHandle className="bg-slate-100 w-0.5 h-full" />
+        <ResizableHandle className="bg-slate-700 w-0.5 h-full" />
         <div className="absolute inset-0 flex items-center pointer-events-none justify-center">
           <div className="bg-slate-100 py-1 rounded">
             <GripVertical className="h-4 w-4 text-slate-900 " />
