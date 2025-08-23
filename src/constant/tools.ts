@@ -1,5 +1,5 @@
 import React from "react";
-import { Combine, Split, Scaling, FileText, RotateCcw, Unlock, Droplets, FilePenLine, type LucideIcon } from "lucide-react";
+import { Combine, Split, Scaling, FileText, RotateCcw, Unlock, Droplets, FilePenLine, type LucideIcon, ImageUpscale } from "lucide-react";
 
 export interface PdfTool {
   href: string;
@@ -83,13 +83,12 @@ export const pdfTools: PdfTool[] = [
     isComingSoon: true,
   },
   {
-    href: "/tools/edit",
-    title: "Edit PDF",
-    description: "Add text, shapes, images, and annotations to your PDF.",
-    icon: FilePenLine,
+    href: "/tools/img-to-pdf",
+    title: "Image to PDF ",
+    description: "Convert your images into PDF files.",
+    icon: ImageUpscale,
     bgColor: "bg-purple-100",
     textColor: "text-purple-600",
     shadowColor: "shadow-purple-300",
-    isComingSoon: true,
   },
 ];

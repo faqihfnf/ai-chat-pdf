@@ -79,21 +79,6 @@ export default function MergePage() {
         <PDFFileManager files={files} onFilesChange={handleFilesChange} actions={actions} title="PDF Files to Merge" allowReorder={true} maxFiles={limits.maxFiles} isProcessing={isLoading} />
 
         {/* Instructions */}
-        {files.length === 0 && !isLoading && (
-          <div className="text-center py-4 text-slate-500">
-            <div className="max-w-md mx-auto">
-              <h3 className="text-xl font-medium text-slate-900 mb-2">No PDF files selected</h3>
-              <p className="text-sm mb-4 text-slate-500">Upload at least PDF {limits.minFiles} files to start merging. You can drag and drop files or click the upload area above.</p>
-              <div className="flex flex-col items-center justify-center text-xs texl-left text-slate-400 space-y-1">
-                <div className="text-left ">
-                  <p>• Maximum {limits.maxFiles} files allowed</p>
-                  <p>• Maximum {formatFileSize(limits.maxFileSize)} per file</p>
-                  <p>• Only PDF files are supported</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
 
         {files.length === 1 && !isLoading && (
           <div className="text-center py-6">

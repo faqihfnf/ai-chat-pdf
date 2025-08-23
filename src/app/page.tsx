@@ -48,7 +48,7 @@ export default function Home() {
         <Link href="/tools">
           <Button variant={"tertiary"} size={"lg"} className="shadow-[0_0_15px_0_var(--tw-shadow-color)] hover:shadow-[0_0_25px_0_var(--tw-shadow-color)] shadow-orange-300 hover:shadow-orange-400 p-4">
             PDF Tools
-            <ToolCase className="ml-2 w-4 h-4" />
+            <ToolCase className="ml-1 w-4 h-4" />
           </Button>
         </Link>
       </div>

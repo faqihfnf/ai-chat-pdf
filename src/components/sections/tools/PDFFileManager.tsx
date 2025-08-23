@@ -41,9 +41,24 @@ const SortableItem = React.memo(({ fileData, index, onRemove, showReorder = true
         </div>
       )}
 
-      {/* PDF Icon */}
-      <div className="flex-shrink-0 w-16 h-20 bg-red-50 rounded border flex items-center justify-center">
-        <FileText className="h-8 w-8 text-red-500" />
+      {/* File Preview */}
+      <div className="flex-shrink-0 w-16 h-20 bg-red-50 rounded border flex items-center justify-center overflow-hidden">
+        {fileData.file.type.startsWith("image/") ? (
+          <img
+            src={URL.createObjectURL(fileData.file)}
+            alt={fileData.name}
+            className="w-full h-full object-cover"
+            onLoad={(e) => {
+              // Clean up object URL after image loads
+              const target = e.currentTarget;
+              if (target && target.src) {
+                setTimeout(() => URL.revokeObjectURL(target.src), 100);
+              }
+            }}
+          />
+        ) : (
+          <FileText className="h-8 w-8 text-orange-500" />
+        )}
       </div>
 
       {/* File Info */}

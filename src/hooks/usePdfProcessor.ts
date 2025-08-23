@@ -8,6 +8,7 @@ interface UsePdfProcessorOptions {
   maxFileSize?: number;
   successMessage?: string;
   downloadFileName?: string;
+  skipFileTypeValidation?: boolean; // TAMBAHAN
 }
 
 interface UsePdfProcessorReturn {
@@ -22,12 +23,20 @@ export const usePdfProcessor = (options: UsePdfProcessorOptions): UsePdfProcesso
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
-  const { apiEndpoint, minFiles = 1, maxFiles, maxFileSize, successMessage = "PDF processed successfully!", downloadFileName = "processed" } = options;
+  const {
+    apiEndpoint,
+    minFiles = 1,
+    maxFiles,
+    maxFileSize,
+    successMessage = "Files processed successfully!",
+    downloadFileName = "processed",
+    skipFileTypeValidation = false, // TAMBAHAN: default false
+  } = options;
 
   const validateFiles = useCallback(
     (files: File[]): boolean => {
       if (files.length < minFiles) {
-        const message = `Please select at least ${minFiles} PDF file${minFiles > 1 ? "s" : ""}`;
+        const message = `Please select at least ${minFiles} file${minFiles > 1 ? "s" : ""}`;
         toast.error(message);
         return false;
       }
@@ -44,14 +53,17 @@ export const usePdfProcessor = (options: UsePdfProcessorOptions): UsePdfProcesso
 
       // Validate each file
       for (const file of files) {
-        if (file.type !== "application/pdf") {
+        // MODIFIKASI: Skip PDF validation jika skipFileTypeValidation = true
+        if (!skipFileTypeValidation && file.type !== "application/pdf") {
           toast.error(`File "${file.name}" is not a valid PDF`);
           return false;
         }
+
         if (file.size === 0) {
           toast.error(`File "${file.name}" is empty`);
           return false;
         }
+
         // Check for reasonable file size (e.g., max 50MB per file)
         if (file.size > 50 * 1024 * 1024) {
           toast.error(`File "${file.name}" is too large. Maximum 50MB per file.`);
@@ -61,7 +73,7 @@ export const usePdfProcessor = (options: UsePdfProcessorOptions): UsePdfProcesso
 
       return true;
     },
-    [minFiles, maxFiles, maxFileSize]
+    [minFiles, maxFiles, maxFileSize, skipFileTypeValidation] // TAMBAHAN: dependency
   );
 
   const downloadFile = useCallback((blob: Blob, filename: string) => {
@@ -91,7 +103,7 @@ export const usePdfProcessor = (options: UsePdfProcessorOptions): UsePdfProcesso
 
       try {
         console.log(
-          `🚀 Starting ${apiEndpoint} process with files:`,
+          `Starting ${apiEndpoint} process with files:`,
           files.map((f) => ({ name: f.name, size: f.size, type: f.type }))
         );
 
@@ -112,7 +124,7 @@ export const usePdfProcessor = (options: UsePdfProcessorOptions): UsePdfProcesso
           formData.append("files", file);
         });
 
-        console.log(`📤 Sending request to ${apiEndpoint}...`);
+        console.log(`Sending request to ${apiEndpoint}...`);
 
         // Send request to API
         const controller = new AbortController();
@@ -128,10 +140,10 @@ export const usePdfProcessor = (options: UsePdfProcessorOptions): UsePdfProcesso
         if (progressInterval) clearInterval(progressInterval);
         setProgress(100);
 
-        console.log("📥 Response status:", response.status);
+        console.log("Response status:", response.status);
 
         if (!response.ok) {
-          let errorMessage = "Failed to process PDFs";
+          let errorMessage = "Failed to process files";
 
           try {
             const errorData = await response.json();
@@ -152,13 +164,13 @@ export const usePdfProcessor = (options: UsePdfProcessorOptions): UsePdfProcesso
         const contentType = response.headers.get("content-type");
         if (!contentType?.includes("application/pdf")) {
           const responseText = await response.text();
-          console.error("❌ Expected PDF but got:", contentType, responseText.substring(0, 200));
+          console.error("Expected PDF but got:", contentType, responseText.substring(0, 200));
           throw new Error("Server returned unexpected content type");
         }
 
         // Get the processed PDF as blob
         const blob = await response.blob();
-        console.log("✅ PDF blob created, size:", blob.size);
+        console.log("PDF blob created, size:", blob.size);
 
         if (blob.size === 0) {
           throw new Error("Received empty PDF file");
@@ -173,9 +185,9 @@ export const usePdfProcessor = (options: UsePdfProcessorOptions): UsePdfProcesso
 
         toast.success(successMessage);
       } catch (error) {
-        console.error(`💥 Error processing PDFs:`, error);
+        console.error(`Error processing files:`, error);
 
-        let errorMessage = "Failed to process PDFs";
+        let errorMessage = "Failed to process files";
         if (error instanceof Error) {
           if (error.name === "AbortError") {
             errorMessage = "Request timed out. Please try with smaller files.";

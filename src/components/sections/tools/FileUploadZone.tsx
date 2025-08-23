@@ -178,11 +178,11 @@ export default function FileUploadZone({
           <div className="w-24 h-24 rounded-full flex items-center justify-center mb-4 opacity-50">
             <Image src="/upload.svg" width={100} height={100} alt="upload" />
           </div>
-          <p className="text-xl font-semibold text-gray-500">Maximum files reached</p>
+          <p className="text-2xl font-semibold text-gray-500">Maximum files reached</p>
           <p className="text-md text-gray-400 mt-2">
             You have uploaded {currentFileCount}/{finalMaxFiles} files
           </p>
-          <p className="text-sm text-gray-400 mt-1">Remove some files to upload more</p>
+          <p className="text-sm text-gray-400 mt-1 mb-8">Remove some files to upload more</p>
         </>
       ) : (
         <>
