@@ -14,8 +14,7 @@ export const pdfTools: PdfTool[] = [
   {
     href: "/tools/merge",
     title: "Merge PDF",
-    description: "Combine multiple PDFs into a single document.",
-    // Ubah di sini: dari <Combine /> menjadi Combine
+    description: "Combine multiple PDF into a single document.",
     icon: Combine,
     bgColor: "bg-red-100",
     textColor: "text-red-600",
