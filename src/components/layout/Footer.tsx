@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="p-4 bg-slate-800">
+    <footer className="p-4 bg-slate-800 w-full">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           {/* Kiri: Nama */}
