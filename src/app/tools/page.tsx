@@ -5,10 +5,10 @@ import { pdfTools } from "@/constant/tools";
 export default function ToolsPage() {
   return (
     <div className="mx-auto p-6">
-      <ToolHeader title="Every Tool You Need to Work With PDFs" description="Merge, split, compress, convert, rotate, unlock, and watermark PDFs with just a few clicks. All are 100% FREE and easy to use." />
+      <ToolHeader title="Every Tool You Need to Work With PDFs" description="Merge, split, compress, convert, rotate, unlock, and watermark PDF with just a few clicks. All are 100% FREE and easy to use." />
 
       {/* Grid of tools */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-12">
         {pdfTools.map((tool) => (
           <ToolCard key={tool.title} tool={tool} />
         ))}

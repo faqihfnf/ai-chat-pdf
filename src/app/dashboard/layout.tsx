@@ -7,7 +7,7 @@ import ChatSidebar from "../../components/sections/dashboard/chat-sidebar";
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const isMobile = UseMediaQuery("(max-width: 768px)");
   return (
-    <div className="h-[calc(100vh-56px)] mt-14">
+    <div className="h-[calc(100vh)] mt-10">
       <ResizablePanelGroup direction={isMobile ? "vertical" : "horizontal"}>
         <ChatSidebar />
         {children}

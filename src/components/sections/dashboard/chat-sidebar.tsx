@@ -126,7 +126,7 @@ export default function ChatSidebar() {
   return (
     <>
       <ResizablePanel defaultSize={15} minSize={12}>
-        <div className="h-full bg-slate-700 flex flex-col items-center">
+        <div className="h-full bg-slate-700 flex flex-col items-center mt-4">
           <div className="p-4 w-full">
             <input {...getInputProps()} />
             {/* Upload Button */}
@@ -157,7 +157,7 @@ export default function ChatSidebar() {
             </Button>
           </div>
 
-          <div className="h-full overflow-y-auto w-full p-4 flex-1">
+          <div className="h-full overflow-y-auto w-full px-4 flex-1">
             {isLoading ? (
               Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="w-full h-8 mb-4" />)
             ) : (
@@ -198,12 +198,12 @@ export default function ChatSidebar() {
           <div className="w-full p-4">
             <div
               className={cn(
-                "text-xs text-slate-200 w-full p-3 rounded-md border transition-all duration-200",
+                "text-xs text-slate-200 mb-4 w-full p-3 rounded-md border transition-all duration-200",
                 isMaxReached ? "bg-red-500/20 border-red-400/30" : remainingCredits === 1 ? "bg-amber-500/20 border-amber-400/30" : "bg-blue-500/20 border-blue-400/30"
               )}
             >
               <div className="flex items-center justify-between mb-1">
-                <span className="font-medium">Documents</span>
+                <span className="font-medium text-xs">Documents</span>
                 <span className={cn("font-bold", isMaxReached ? "text-red-300" : "text-slate-200")}>
                   {usedChats}/{MAX_CHATS}
                 </span>

@@ -24,7 +24,7 @@ export default function Home() {
         </Cover>
       </h1>
       <p className="text-md md:text-xl text-muted-foreground max-w-2xl">
-        Upload Any <Highlight>PDF</Highlight> , ask your question and get answers <Highlight>instantly</Highlight> with AI Chat. It&apos;s that <Highlight> easy.</Highlight>
+        Upload Any <Highlight>PDF</Highlight>, ask your question and get answers <Highlight>instantly</Highlight> with AI Chat. It&apos;s that <Highlight> easy.</Highlight>
       </p>
       <SignedOut>
         <SignInButton oauthFlow="popup" mode="modal" signUpFallbackRedirectUrl={"/dashboard"} signUpForceRedirectUrl={"/dashboard"}>

@@ -207,3 +207,6 @@
     opacity: 0;
   }
 }
+.font-macondo {
+  font-family: var(--font-macondo);
+}

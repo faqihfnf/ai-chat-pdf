@@ -8,6 +8,8 @@ export interface PdfTool {
   icon: LucideIcon;
   bgColor: string;
   textColor: string;
+  shadowColor: string;
+  isComingSoon?: boolean;
 }
 
 export const pdfTools: PdfTool[] = [
@@ -18,6 +20,7 @@ export const pdfTools: PdfTool[] = [
     icon: Combine,
     bgColor: "bg-red-100",
     textColor: "text-red-600",
+    shadowColor: "shadow-red-300",
   },
   {
     href: "/tools/split",
@@ -26,6 +29,8 @@ export const pdfTools: PdfTool[] = [
     icon: Split,
     bgColor: "bg-orange-100",
     textColor: "text-orange-600",
+    shadowColor: "shadow-orange-300",
+    isComingSoon: true,
   },
   {
     href: "/tools/compress",
@@ -34,6 +39,8 @@ export const pdfTools: PdfTool[] = [
     icon: Scaling,
     bgColor: "bg-green-100",
     textColor: "text-green-600",
+    shadowColor: "shadow-green-300",
+    isComingSoon: true,
   },
   {
     href: "/tools/pdf-to-word",
@@ -42,6 +49,8 @@ export const pdfTools: PdfTool[] = [
     icon: FileText,
     bgColor: "bg-blue-100",
     textColor: "text-blue-600",
+    shadowColor: "shadow-blue-300",
+    isComingSoon: true,
   },
   {
     href: "/tools/rotate",
@@ -50,6 +59,8 @@ export const pdfTools: PdfTool[] = [
     icon: RotateCcw,
     bgColor: "bg-pink-100",
     textColor: "text-pink-600",
+    shadowColor: "shadow-pink-300",
+    isComingSoon: true,
   },
   {
     href: "/tools/unlock",
@@ -58,6 +69,8 @@ export const pdfTools: PdfTool[] = [
     icon: Unlock,
     bgColor: "bg-yellow-100",
     textColor: "text-yellow-600",
+    shadowColor: "shadow-yellow-300",
+    isComingSoon: true,
   },
   {
     href: "/tools/watermark",
@@ -66,6 +79,8 @@ export const pdfTools: PdfTool[] = [
     icon: Droplets,
     bgColor: "bg-teal-100",
     textColor: "text-teal-600",
+    shadowColor: "shadow-teal-300",
+    isComingSoon: true,
   },
   {
     href: "/tools/edit",
@@ -74,5 +89,7 @@ export const pdfTools: PdfTool[] = [
     icon: FilePenLine,
     bgColor: "bg-purple-100",
     textColor: "text-purple-600",
+    shadowColor: "shadow-purple-300",
+    isComingSoon: true,
   },
 ];
