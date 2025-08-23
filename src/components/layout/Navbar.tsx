@@ -25,7 +25,7 @@ export default function Navbar() {
         <SignInButton oauthFlow="popup" mode="modal" signUpFallbackRedirectUrl={"/dashboard"} signUpForceRedirectUrl={"/dashboard"}>
           <Button variant={"outline"} size={"sm"}>
             <Image src="/google.svg" width={12} height={12} alt="google" />
-            <span className="text-xs">Login with Google</span>
+            <span className="text-xs">Login</span>
           </Button>
         </SignInButton>
       </SignedOut>

@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Cover } from "@/components/ui/cover";
 import { SignedOut, SignedIn, SignInButton } from "@clerk/nextjs";
-import { ArrowRightIcon, FileText, MessageCircle, Stars, Zap } from "lucide-react";
+import { ArrowRightIcon, FileText, MessageCircle, Stars, ToolCase, Zap } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -26,25 +26,32 @@ export default function Home() {
       <p className="text-md md:text-xl text-muted-foreground max-w-2xl">
         Upload Any <Highlight>PDF</Highlight>, ask your question and get answers <Highlight>instantly</Highlight> with AI Chat. It&apos;s that <Highlight> easy.</Highlight>
       </p>
-      <SignedOut>
-        <SignInButton oauthFlow="popup" mode="modal" signUpFallbackRedirectUrl={"/dashboard"} signUpForceRedirectUrl={"/dashboard"}>
-          <Button size={"lg"}>
-            <Image src="/google.svg" width={15} height={15} alt="google" />
-            Login with Google
-          </Button>
-        </SignInButton>
-      </SignedOut>
 
-      <SignedIn>
-        <Link href="/dashboard">
-          <Button
-            className="bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:bg-gradient-to-l hover:from-amber-500 hover:via-orange-500 hover:to-rose-500 shadow-[0_0_15px_0_var(--tw-shadow-color)] hover:shadow-[0_0_25px_0_var(--tw-shadow-color)] shadow-orange-300 hover:shadow-orange-400 transition-all duration-300 ease-in-out"
-            size={"lg"}
-          >
-            Go to Dashboard <ArrowRightIcon className="w-6 h-6" />
+      <div className="flex items-center justify-center gap-4">
+        <SignedOut>
+          <SignInButton oauthFlow="popup" mode="modal" signUpFallbackRedirectUrl={"/dashboard"} signUpForceRedirectUrl={"/dashboard"}>
+            <Button size={"lg"} variant={"outline"}>
+              <Image src="/google.svg" width={12} height={12} alt="google" />
+              Login
+            </Button>
+          </SignInButton>
+        </SignedOut>
+
+        <SignedIn>
+          <Link href="/dashboard">
+            <Button variant={"primary"} className=" shadow-[0_0_15px_0_var(--tw-shadow-color)] hover:shadow-[0_0_25px_0_var(--tw-shadow-color)] shadow-orange-300 hover:shadow-orange-400 transition-all duration-300 ease-in-out" size={"lg"}>
+              Dashboard <ArrowRightIcon className="w-6 h-6" />
+            </Button>
+          </Link>
+        </SignedIn>
+
+        <Link href="/tools">
+          <Button variant={"tertiary"} size={"lg"} className="shadow-[0_0_15px_0_var(--tw-shadow-color)] hover:shadow-[0_0_25px_0_var(--tw-shadow-color)] shadow-orange-300 hover:shadow-orange-400 p-4">
+            PDF Tools
+            <ToolCase className="ml-2 w-4 h-4" />
           </Button>
         </Link>
-      </SignedIn>
+      </div>
 
       {/* Feature highlights */}
       <div className="flex flex-wrap justify-center gap-6 max-w-2xl">
