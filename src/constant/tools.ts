@@ -40,7 +40,6 @@ export const pdfTools: PdfTool[] = [
     bgColor: "bg-green-100",
     textColor: "text-green-600",
     shadowColor: "shadow-green-300",
-    isComingSoon: true,
   },
   {
     href: "/tools/pdf-to-word",
@@ -60,7 +59,6 @@ export const pdfTools: PdfTool[] = [
     bgColor: "bg-pink-100",
     textColor: "text-pink-600",
     shadowColor: "shadow-pink-300",
-    isComingSoon: true,
   },
   {
     href: "/tools/unlock",

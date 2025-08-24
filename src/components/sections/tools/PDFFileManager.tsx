@@ -29,14 +29,14 @@ const SortableItem = React.memo(({ fileData, index, onRemove, showReorder = true
       ref={setNodeRef}
       style={style}
       className={`
-        flex items-center gap-4 p-4 bg-white rounded-lg border-2 border-gray-200
+        flex items-center gap-4 p-4 bg-white rounded-lg border-2 border-slate-200
         transition-all duration-200 hover:border-orange-300 hover:shadow-md
         ${isDragging ? "shadow-lg border-orange-400 opacity-50" : ""}
       `}
     >
       {/* Drag Handle - Only show if reordering is enabled */}
       {showReorder && (
-        <div {...attributes} {...listeners} className="text-gray-400 hover:text-gray-600 cursor-grab active:cursor-grabbing touch-none">
+        <div {...attributes} {...listeners} className="text-slate-400 hover:text-slate-600 cursor-grab active:cursor-grabbing touch-none">
           <GripVertical className="h-5 w-5" />
         </div>
       )}
@@ -63,11 +63,11 @@ const SortableItem = React.memo(({ fileData, index, onRemove, showReorder = true
 
       {/* File Info */}
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-gray-900 truncate" title={fileData.name}>
+        <p className="text-sm font-medium text-slate-900 truncate" title={fileData.name}>
           {fileData.name}
         </p>
-        <p className="text-xs text-gray-500">{formatFileSize(fileData.size)}</p>
-        <p className="text-xs text-gray-400">{fileData.type}</p>
+        <p className="text-xs text-slate-500">{formatFileSize(fileData.size)}</p>
+        <p className="text-xs text-slate-400">{fileData.type}</p>
       </div>
 
       {/* Order Number */}
@@ -76,7 +76,7 @@ const SortableItem = React.memo(({ fileData, index, onRemove, showReorder = true
       </div>
 
       {/* Remove Button */}
-      <button onClick={handleRemove} className="flex-shrink-0 p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors cursor-pointer" type="button" aria-label={`Remove ${fileData.name}`}>
+      <button onClick={handleRemove} className="flex-shrink-0 p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors cursor-pointer" type="button" aria-label={`Remove ${fileData.name}`}>
         <X className="h-4 w-4" />
       </button>
     </div>
@@ -207,7 +207,7 @@ export default function PDFFileManager({ files, onFilesChange, actions, title = 
     <div className={`mt-6 ${className}`}>
       {/* Header with file count and validation */}
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-700">
+        <h3 className="text-lg font-semibold">
           {title} ({fileData.length} {fileData.length === 1 ? "file" : "files"})
         </h3>
 
@@ -242,7 +242,7 @@ export default function PDFFileManager({ files, onFilesChange, actions, title = 
           ))}
 
           {/* Reset Button */}
-          <Button size="xl" variant="outline" onClick={handleResetAll} disabled={isProcessing} className="hover:bg-red-500 hover:text-white">
+          <Button size="xl" variant="outline" onClick={handleResetAll} disabled={isProcessing} className="hover:bg-red-500 dark:hover:bg-red-500 hover:text-white">
             <Eraser className="h-5 w-5" /> Reset All
           </Button>
         </div>

@@ -5,7 +5,6 @@ import { FileImage } from "lucide-react";
 import { usePdfProcessor } from "@/hooks/usePdfProcessor";
 import { FILE_UPLOAD_LIMITS } from "@/constant/file-upload-limit";
 import FileUploadZone from "@/components/sections/tools/FileUploadZone";
-import ImageFileManager from "@/components/sections/tools/img-to-pdf/ImageFileManager";
 import ToolHeader from "@/components/sections/tools/ToolHeader";
 import PDFFileManager from "@/components/sections/tools/PDFFileManager";
 import ProgressBar from "@/components/ui/progress-bar";
