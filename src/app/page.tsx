@@ -57,15 +57,15 @@ export default function Home() {
       <div className="flex flex-wrap justify-center gap-6 max-w-2xl">
         <div className="flex items-center gap-2 bg-white/60 backdrop-blur-sm rounded-full px-4 py-2 border border-orange-200/50 shadow-sm shadow-orange-300 hover:shadow-md transition-all duration-300 hover:scale-105">
           <FileText className="w-4 h-4 text-orange-600" />
-          <span className="text-sm font-medium text-gray-700">Any PDF Format</span>
+          <span className="text-sm font-medium text-slate-700">Any PDF Format</span>
         </div>
         <div className="flex items-center gap-2 bg-white/60 backdrop-blur-sm rounded-full px-4 py-2 border border-orange-200/50 shadow-sm shadow-rose-300 hover:shadow-md transition-all duration-300 hover:scale-105">
           <Zap className="w-4 h-4 text-rose-600" />
-          <span className="text-sm font-medium text-gray-700">Instant Answers</span>
+          <span className="text-sm font-medium text-slate-700">Instant Answers</span>
         </div>
         <div className="flex items-center gap-2 bg-white/60 backdrop-blur-sm rounded-full px-4 py-2 border border-orange-200/50 shadow-sm shadow-amber-300 hover:shadow-md transition-all duration-300 hover:scale-105">
           <MessageCircle className="w-4 h-4 text-amber-600" />
-          <span className="text-sm font-medium text-gray-700">Real-time Chat</span>
+          <span className="text-sm font-medium text-slate-700">Real-time Chat</span>
         </div>
       </div>
 

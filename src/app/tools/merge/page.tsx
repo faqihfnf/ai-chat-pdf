@@ -71,7 +71,7 @@ export default function MergePage() {
         {isLoading && (
           <div className="w-full">
             <ProgressBar progress={progress} />
-            <p className="text-center text-sm text-slate-600 mt-2">Processing your PDF... Please wait.</p>
+            <p className="text-center text-sm animate-pulse mt-2">Processing your PDF... Please wait.</p>
           </div>
         )}
 

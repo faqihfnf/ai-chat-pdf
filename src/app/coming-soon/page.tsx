@@ -25,7 +25,7 @@ export default function ComingSoonPage() {
         <Wrench className="w-4 h-4 text-orange-500" />
         <span>In development</span>
       </div>
-      <div className="w-48 h-2 bg-gray-200 dark:bg-gray-700 rounded-full mt-2 overflow-hidden">
+      <div className="w-48 h-2 bg-slate-200 dark:bg-slate-700 rounded-full mt-2 overflow-hidden">
         <motion.div
           className="h-2 bg-gradient-to-tr from-amber-500 via-orange-500 to-rose-500 hover:bg-gradient-to-tl"
           initial={{ width: "20%" }}

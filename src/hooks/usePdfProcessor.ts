@@ -8,7 +8,7 @@ interface UsePdfProcessorOptions {
   maxFileSize?: number;
   successMessage?: string;
   downloadFileName?: string;
-  skipFileTypeValidation?: boolean; // TAMBAHAN
+  skipFileTypeValidation?: boolean;
 }
 
 interface UsePdfProcessorReturn {
@@ -23,15 +23,7 @@ export const usePdfProcessor = (options: UsePdfProcessorOptions): UsePdfProcesso
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
-  const {
-    apiEndpoint,
-    minFiles = 1,
-    maxFiles,
-    maxFileSize,
-    successMessage = "Files processed successfully!",
-    downloadFileName = "processed",
-    skipFileTypeValidation = false, // TAMBAHAN: default false
-  } = options;
+  const { apiEndpoint, minFiles = 1, maxFiles, maxFileSize, successMessage = "Files processed successfully!", downloadFileName = "processed", skipFileTypeValidation = false } = options;
 
   const validateFiles = useCallback(
     (files: File[]): boolean => {
@@ -73,7 +65,7 @@ export const usePdfProcessor = (options: UsePdfProcessorOptions): UsePdfProcesso
 
       return true;
     },
-    [minFiles, maxFiles, maxFileSize, skipFileTypeValidation] // TAMBAHAN: dependency
+    [minFiles, maxFiles, maxFileSize, skipFileTypeValidation]
   );
 
   const downloadFile = useCallback((blob: Blob, filename: string) => {

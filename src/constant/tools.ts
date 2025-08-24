@@ -1,5 +1,5 @@
 import React from "react";
-import { Combine, Split, Scaling, FileText, RotateCcw, Unlock, Droplets, FilePenLine, type LucideIcon, ImageUpscale } from "lucide-react";
+import { Combine, Split, Scaling, FileText, RotateCcw, Unlock, Droplets, FilePenLine, type LucideIcon, ImageUpscale, FileSpreadsheet, LockKeyhole } from "lucide-react";
 
 export interface PdfTool {
   href: string;
@@ -83,10 +83,50 @@ export const pdfTools: PdfTool[] = [
   {
     href: "/tools/img-to-pdf",
     title: "Image to PDF ",
-    description: "Convert your images into PDF files.",
+    description: "Convert your images into a single PDF file.",
     icon: ImageUpscale,
     bgColor: "bg-purple-100",
     textColor: "text-purple-600",
     shadowColor: "shadow-purple-300",
+  },
+  {
+    href: "/tools/pdf-to-excel",
+    title: "PDF to Excel",
+    description: "Convert your PDF files into Excel spreadsheets.",
+    icon: FileSpreadsheet,
+    bgColor: "bg-indigo-100",
+    textColor: "text-indigo-600",
+    shadowColor: "shadow-indigo-300",
+    isComingSoon: true,
+  },
+  {
+    href: "/tools/protect",
+    title: "Protect PDF",
+    description: "Secure your PDF files with password protection.",
+    icon: LockKeyhole,
+    bgColor: "bg-fuchsia-100",
+    textColor: "text-fuchsia-600",
+    shadowColor: "shadow-fuchsia-300",
+    isComingSoon: true,
+  },
+  {
+    href: "/tools/pdf-to-ppt",
+    title: "PDF to PowerPoint",
+    description: "Convert your PDF files into PowerPoint presentations.",
+    icon: FilePenLine,
+    bgColor: "bg-cyan-100",
+    textColor: "text-cyan-600",
+    shadowColor: "shadow-cyan-300",
+    isComingSoon: true,
+  },
+  {
+    href: "/tools/remove",
+    title: "Remove Page",
+    description: "Remove specific pages from a PDF file.",
+    icon: FilePenLine,
+    bgColor: "bg-emerald-100",
+    textColor: "text-emerald-600",
+    shadowColor: "shadow-emerald-300",
+    isComingSoon: true,
   },
 ];

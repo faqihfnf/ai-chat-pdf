@@ -48,7 +48,7 @@ export default function ImageToPdfPage() {
 
   return (
     <div className="mx-auto p-6">
-      <ToolHeader title="Convert Images to PDF" description="Merge multiple PDF files into a single file with just a few clicks. All are 100% FREE and easy to use." />
+      <ToolHeader title="Convert Images to PDF" description="Convert images to PDF files for easy reading and sharing online or offline." />
 
       <div className="mt-8 max-w-4xl mx-auto space-y-6">
         {/* Upload Zone */}
@@ -58,7 +58,7 @@ export default function ImageToPdfPage() {
         {isLoading && (
           <div className="w-full">
             <ProgressBar progress={progress} />
-            <p className="text-center text-sm text-slate-600 mt-2">Processing your PDF... Please wait.</p>
+            <p className="text-center text-sm mt-2 animate-pulse">Processing your PDF... Please wait.</p>
           </div>
         )}
 

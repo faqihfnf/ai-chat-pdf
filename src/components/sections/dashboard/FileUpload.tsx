@@ -104,7 +104,7 @@ export default function FileUpload() {
           <>
             <Image src="/upload.svg" width={100} height={100} alt="upload" />
             <p className="text-md font-medium mt-4 animate-pulse text-slate-900">Drag and drop your PDF here</p>
-            <p className="text-sm text-gray-600 mt-1">{remainingCredits === 1 ? "⚠️ Last document remaining" : `${remainingCredits} documents remaining`}</p>
+            <p className="text-sm text-slate-600 mt-1">{remainingCredits === 1 ? "⚠️ Last document remaining" : `${remainingCredits} documents remaining`}</p>
           </>
         )}
       </div>
