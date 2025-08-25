@@ -1,9 +1,7 @@
 "use client";
 
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { SignedIn, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
-import Image from "next/image";
-import { Button } from "../ui/button";
 import ModeToggle from "./ModeToggle";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -38,14 +36,14 @@ export default function Navbar() {
         )}
       </SignedIn>
 
-      <SignedOut>
+      {/* <SignedOut>
         <SignInButton oauthFlow="popup" mode="modal" signUpFallbackRedirectUrl={"/dashboard"} signUpForceRedirectUrl={"/dashboard"}>
           <Button variant={"outline"} size={"sm"}>
             <Image src="/google.svg" width={12} height={12} alt="google" />
             <span className="text-xs">Login</span>
           </Button>
         </SignInButton>
-      </SignedOut>
+      </SignedOut> */}
 
       {/* Right Section */}
       <div className="flex items-center gap-4">

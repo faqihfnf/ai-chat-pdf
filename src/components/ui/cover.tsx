@@ -42,12 +42,7 @@ export const Cover = ({ children, className }: { children?: React.ReactNode; cla
   }, []); // Remove ref.current from dependencies
 
   return (
-    <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      ref={ref}
-      className="relative hover:bg-neutral-900  group/cover inline-block dark:bg-neutral-900 bg-neutral-100 px-2 py-2  transition duration-200 rounded-sm"
-    >
+    <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} ref={ref} className="relative hover:bg-slate-950 group/cover inline-block  bg-slate-900 py-2 md:py-0 px-2 transition duration-200 rounded-sm">
       <AnimatePresence>
         {hovered && (
           <motion.div
@@ -124,14 +119,10 @@ export const Cover = ({ children, className }: { children?: React.ReactNode; cla
             duration: 0.2,
           },
         }}
-        className={cn("dark:text-white inline-block text-neutral-900 relative z-20 group-hover/cover:text-white transition duration-200", className)}
+        className={cn("dark:text-white inline-block text-slate-900 relative z-20 group-hover/cover:text-white transition duration-200", className)}
       >
         {children}
       </motion.span>
-      <CircleIcon className="absolute -right-[2px] -top-[2px]" />
-      <CircleIcon className="absolute -bottom-[2px] -right-[2px]" delay={0.4} />
-      <CircleIcon className="absolute -left-[2px] -top-[2px]" delay={0.8} />
-      <CircleIcon className="absolute -bottom-[2px] -left-[2px]" delay={1.6} />
     </div>
   );
 };
@@ -193,7 +184,7 @@ export const Beam = ({
 export const CircleIcon = ({ className, delay }: { className?: string; delay?: number }) => {
   return (
     <div
-      className={cn(`pointer-events-none animate-pulse group-hover/cover:hidden group-hover/cover:opacity-100 group h-2 w-2 rounded-full bg-neutral-600 dark:bg-white opacity-20 group-hover/cover:bg-white`, className, {
+      className={cn(`pointer-events-none animate-pulse group-hover/cover:hidden group-hover/cover:opacity-100 group h-2 w-2 rounded-full bg-slate-600 dark:bg-white opacity-20 group-hover/cover:bg-white`, className, {
         "delay-300": delay,
       })}
     ></div>
