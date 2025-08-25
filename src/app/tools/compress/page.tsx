@@ -21,7 +21,7 @@ export default function CompressPdfPage() {
     maxFiles: limits.maxFiles,
     maxFileSize: limits.maxFileSize,
     successMessage: "PDF compressed successfully!",
-    downloadFileName: "compressed-pdf",
+    downloadFileName: "compressed",
     compressionLevel,
   });
 

@@ -19,7 +19,7 @@ export default function RotatePdfPage() {
   const [rotateAll, setRotateAll] = useState<boolean>(true);
   const [specificPages, setSpecificPages] = useState<string>("");
 
-  const { processFiles, isLoading, progress } = usePdfProcessor({
+  const { isLoading, progress } = usePdfProcessor({
     apiEndpoint: "/api/tools/rotate",
     minFiles: limits.minFiles,
     maxFiles: limits.maxFiles,

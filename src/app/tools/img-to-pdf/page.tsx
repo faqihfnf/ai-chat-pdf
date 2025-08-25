@@ -20,7 +20,7 @@ export default function ImageToPdfPage() {
     maxFiles: limits.maxFiles,
     maxFileSize: limits.maxFileSize,
     successMessage: "Images converted to PDF successfully!",
-    downloadFileName: "images-to-pdf",
+    downloadFileName: "images_to_pdf",
     skipFileTypeValidation: true,
   });
 

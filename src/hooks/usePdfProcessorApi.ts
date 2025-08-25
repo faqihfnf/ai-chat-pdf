@@ -228,16 +228,16 @@ export const usePdfProcessorApi = (options: UsePdfProcessorApiOptions): UsePdfPr
 
         // Generate filename with timestamp
         const timestamp = new Date().toISOString().slice(0, 19).replace(/[:-]/g, "");
-        let filename = `${downloadFileName}_${tool}_${timestamp}.pdf`;
+        let filename = `${downloadFileName}_${timestamp}.pdf`;
 
         // Try to get filename from response headers if available
-        const contentDisposition = response.headers.get("Content-Disposition");
-        if (contentDisposition) {
-          const filenameMatch = contentDisposition.match(/filename="([^"]+)"/);
-          if (filenameMatch) {
-            filename = filenameMatch[1];
-          }
-        }
+        // const contentDisposition = response.headers.get("Content-Disposition");
+        // if (contentDisposition) {
+        //   const filenameMatch = contentDisposition.match(/filename="([^"]+)"/);
+        //   if (filenameMatch) {
+        //     filename = filenameMatch[1];
+        //   }
+        // }
 
         // Download the file
         downloadFile(resultBlob, filename);

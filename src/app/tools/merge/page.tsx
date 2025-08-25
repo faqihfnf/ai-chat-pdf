@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { Combine, Download } from "lucide-react";
+import { Combine } from "lucide-react";
 import FileUploadZone from "@/components/sections/tools/FileUploadZone";
 import ToolHeader from "@/components/sections/tools/ToolHeader";
 import PDFFileManager from "@/components/sections/tools/PDFFileManager";
@@ -9,7 +9,6 @@ import ProgressBar from "@/components/ui/progress-bar";
 import { useMergePdf } from "@/hooks/useMergePdf";
 import { FileAction } from "@/types/pdf";
 import { FILE_UPLOAD_LIMITS } from "@/constant/file-upload-limit";
-import { formatFileSize } from "@/lib/format-file-size";
 
 export default function MergePage() {
   const [files, setFiles] = useState<File[]>([]);
