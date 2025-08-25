@@ -6,14 +6,22 @@ import FileUploadZone from "@/components/sections/tools/FileUploadZone";
 import ToolHeader from "@/components/sections/tools/ToolHeader";
 import PDFFileManager from "@/components/sections/tools/PDFFileManager";
 import ProgressBar from "@/components/ui/progress-bar";
-import { useMergePdf } from "@/hooks/useMergePdf";
 import { FileAction } from "@/types/pdf";
 import { FILE_UPLOAD_LIMITS } from "@/constant/file-upload-limit";
+import { usePdfProcessor } from "@/hooks/usePdfProcessor";
+
+const limits = FILE_UPLOAD_LIMITS.MERGE_PDF;
 
 export default function MergePage() {
   const [files, setFiles] = useState<File[]>([]);
-  const { processFiles, isLoading, progress } = useMergePdf();
-  const limits = FILE_UPLOAD_LIMITS.MERGE_PDF;
+  const { processFiles, isLoading, progress } = usePdfProcessor({
+    apiEndpoint: "/api/tools/merge",
+    minFiles: limits.minFiles,
+    maxFiles: limits.maxFiles,
+    maxFileSize: limits.maxFileSize,
+    successMessage: "PDF merged successfully!",
+    downloadFileName: "merged",
+  });
 
   // Handle file upload with validation
   const handleFileUpload = useCallback((acceptedFiles: File[]) => {
