@@ -6,8 +6,8 @@ import { usePdfProcessor } from "@/hooks/usePdfProcessor";
 import { FILE_UPLOAD_LIMITS } from "@/constant/file-upload-limit";
 import FileUploadZone from "@/components/sections/tools/FileUploadZone";
 import ToolHeader from "@/components/sections/tools/ToolHeader";
-import PDFFileManager from "@/components/sections/tools/PDFFileManager";
 import ProgressBar from "@/components/ui/progress-bar";
+import PdfFileManager from "@/components/sections/tools/PdfFileManager";
 
 const limits = FILE_UPLOAD_LIMITS.IMAGE_TO_PDF;
 
@@ -63,7 +63,7 @@ export default function ImageToPdfPage() {
         )}
 
         {/* PDF File Manager */}
-        <PDFFileManager files={files} onFilesChange={handleFilesChange} actions={actions} title="PDF Files to Merge" allowReorder={true} maxFiles={limits.maxFiles} isProcessing={isLoading} />
+        <PdfFileManager files={files} onFilesChange={handleFilesChange} actions={actions} title="PDF Files to Merge" allowReorder={true} maxFiles={limits.maxFiles} isProcessing={isLoading} />
       </div>
     </div>
   );

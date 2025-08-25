@@ -5,9 +5,9 @@ import { FileArchive } from "lucide-react";
 import { FILE_UPLOAD_LIMITS } from "@/constant/file-upload-limit";
 import FileUploadZone from "@/components/sections/tools/FileUploadZone";
 import ToolHeader from "@/components/sections/tools/ToolHeader";
-import PDFFileManager from "@/components/sections/tools/PDFFileManager";
 import ProgressBar from "@/components/ui/progress-bar";
 import { usePdfProcessorApi } from "@/hooks/usePdfProcessorApi";
+import PdfFileManager from "@/components/sections/tools/PdfFileManager";
 
 const limits = FILE_UPLOAD_LIMITS.COMPRESS_PDF;
 
@@ -111,7 +111,7 @@ export default function CompressPdfPage() {
         )}
 
         {/* PDF File Manager */}
-        <PDFFileManager files={files} onFilesChange={handleFilesChange} actions={actions} title="PDF File to Compress" allowReorder={false} maxFiles={limits.maxFiles} isProcessing={isLoading} />
+        <PdfFileManager files={files} onFilesChange={handleFilesChange} actions={actions} title="PDF File to Compress" allowReorder={false} maxFiles={limits.maxFiles} isProcessing={isLoading} />
 
         {/* Error display */}
         {error && (

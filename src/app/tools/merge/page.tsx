@@ -4,11 +4,11 @@ import React, { useState, useCallback } from "react";
 import { Combine } from "lucide-react";
 import FileUploadZone from "@/components/sections/tools/FileUploadZone";
 import ToolHeader from "@/components/sections/tools/ToolHeader";
-import PDFFileManager from "@/components/sections/tools/PDFFileManager";
 import ProgressBar from "@/components/ui/progress-bar";
 import { FileAction } from "@/types/pdf";
 import { FILE_UPLOAD_LIMITS } from "@/constant/file-upload-limit";
 import { usePdfProcessor } from "@/hooks/usePdfProcessor";
+import PdfFileManager from "@/components/sections/tools/PdfFileManager";
 
 const limits = FILE_UPLOAD_LIMITS.MERGE_PDF;
 
@@ -83,7 +83,7 @@ export default function MergePage() {
         )}
 
         {/* PDF File Manager */}
-        <PDFFileManager files={files} onFilesChange={handleFilesChange} actions={actions} title="PDF Files to Merge" allowReorder={true} maxFiles={limits.maxFiles} isProcessing={isLoading} />
+        <PdfFileManager files={files} onFilesChange={handleFilesChange} actions={actions} title="PDF Files to Merge" allowReorder={true} maxFiles={limits.maxFiles} isProcessing={isLoading} />
 
         {/* Instructions */}
 

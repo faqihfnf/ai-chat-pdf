@@ -85,8 +85,8 @@ const SortableItem = React.memo(({ fileData, index, onRemove, showReorder = true
 
 SortableItem.displayName = "SortableItem";
 
-// Main PDFFileManager component
-interface PDFFileManagerProps {
+// Main PdfFileManager component
+interface PdfFileManagerProps {
   files: File[];
   onFilesChange: (files: File[]) => void;
   actions: FileAction[];
@@ -97,7 +97,7 @@ interface PDFFileManagerProps {
   className?: string;
 }
 
-export default function PDFFileManager({ files, onFilesChange, actions, title = "PDF Files", allowReorder = true, maxFiles, isProcessing = false, className = "" }: PDFFileManagerProps) {
+export default function PdfFileManager({ files, onFilesChange, actions, title = "PDF Files", allowReorder = true, maxFiles, isProcessing = false, className = "" }: PdfFileManagerProps) {
   const [fileData, setFileData] = useState<PDFFileData[]>([]);
   const [pendingUpdate, setPendingUpdate] = useState<File[] | null>(null);
 

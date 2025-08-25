@@ -7,9 +7,9 @@ import { usePdfProcessor } from "@/hooks/usePdfProcessor";
 import { FILE_UPLOAD_LIMITS } from "@/constant/file-upload-limit";
 import FileUploadZone from "@/components/sections/tools/FileUploadZone";
 import ToolHeader from "@/components/sections/tools/ToolHeader";
-import PDFFileManager from "@/components/sections/tools/PDFFileManager";
 import ProgressBar from "@/components/ui/progress-bar";
 import { Button } from "@/components/ui/button";
+import PdfFileManager from "@/components/sections/tools/PdfFileManager";
 
 const limits = FILE_UPLOAD_LIMITS.ROTATE_PDF;
 
@@ -201,7 +201,7 @@ export default function RotatePdfPage() {
         )}
 
         {/* PDF File Manager */}
-        <PDFFileManager
+        <PdfFileManager
           files={files}
           onFilesChange={handleFilesChange}
           actions={actions}
