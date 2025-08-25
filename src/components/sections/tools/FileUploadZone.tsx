@@ -1,7 +1,7 @@
 "use client";
 
 import { Loader } from "lucide-react";
-import { useDropzone } from "react-dropzone";
+import { FileRejection, useDropzone } from "react-dropzone";
 import React, { useMemo } from "react";
 import Image from "next/image";
 import { FILE_UPLOAD_LIMITS } from "@/constant/file-upload-limit";
@@ -55,7 +55,7 @@ export default function FileUploadZone({
   }, [acceptedTypes]);
 
   // Enhanced onDrop handler with validation and toast notifications
-  const handleDrop = (acceptedFiles: File[], rejectedFiles: any[]) => {
+  const handleDrop = (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
     // TAMBAHAN: Cek jika sudah mencapai maksimum file
     if (isMaxReached) {
       toast.error(`Maximum ${finalMaxFiles} files allowed. Please remove some files first.`);
@@ -73,7 +73,7 @@ export default function FileUploadZone({
       rejectedFiles.forEach((rejectedFile) => {
         const { file, errors } = rejectedFile;
 
-        errors.forEach((error: any) => {
+        errors.forEach((error: { code: string; message: string }) => {
           switch (error.code) {
             case "file-too-large":
               toast.error(`File "${file.name}" is too large. Maximum ${Math.round(finalMaxFileSize / (1024 * 1024))}MB allowed.`);

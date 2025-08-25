@@ -187,9 +187,10 @@ export const usePdfProcessorApi = (options: UsePdfProcessorApiOptions): UsePdfPr
           try {
             const errorData = await response.json();
             errorMessage = errorData.error || errorMessage;
-          } catch (parseError) {
+          } catch (error) {
             // If we can't parse JSON, use status text
             errorMessage = response.statusText || errorMessage;
+            console.error("Failed to parse error response:", error);
           }
 
           // Handle specific error codes
@@ -211,8 +212,8 @@ export const usePdfProcessorApi = (options: UsePdfProcessorApiOptions): UsePdfPr
           try {
             const errorData = await response.json();
             throw new Error(errorData.error || "Invalid response format");
-          } catch (parseError) {
-            throw new Error("Invalid response format - expected PDF file");
+          } catch (error) {
+            throw new Error("Invalid response format - expected PDF file" + error);
           }
         }
 
@@ -228,7 +229,7 @@ export const usePdfProcessorApi = (options: UsePdfProcessorApiOptions): UsePdfPr
 
         // Generate filename with timestamp
         const timestamp = new Date().toISOString().slice(0, 19).replace(/[:-]/g, "");
-        let filename = `${downloadFileName}_${timestamp}.pdf`;
+        const filename = `${downloadFileName}_${timestamp}.pdf`;
 
         // Try to get filename from response headers if available
         // const contentDisposition = response.headers.get("Content-Disposition");

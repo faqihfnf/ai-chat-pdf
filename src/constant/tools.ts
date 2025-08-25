@@ -1,4 +1,3 @@
-import React from "react";
 import { Combine, Split, Scaling, FileText, RotateCcw, Unlock, Droplets, FilePenLine, type LucideIcon, ImageUpscale, FileSpreadsheet, LockKeyhole } from "lucide-react";
 
 export interface PdfTool {

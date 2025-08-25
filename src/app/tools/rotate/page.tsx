@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { RotateCw, RefreshCcw, RotateCwSquare, RotateCcwSquare, ArrowDown, CornerDownRight, CornerDownLeft } from "lucide-react";
+import { RotateCw, ArrowDown, CornerDownRight, CornerDownLeft } from "lucide-react";
 import { toast } from "sonner";
 import { usePdfProcessor } from "@/hooks/usePdfProcessor";
 import { FILE_UPLOAD_LIMITS } from "@/constant/file-upload-limit";
@@ -184,7 +184,7 @@ export default function RotatePdfPage() {
                       placeholder="e.g., 1,2 or 1-2 (for a 2-page PDF)"
                       className="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
                     />
-                    <p className="mt-1 text-xs text-slate-500">Enter page numbers separated by commas (e.g., 1,2) or ranges (e.g., 1-2). Make sure page numbers don't exceed the total pages in your PDF.</p>
+                    <p className="mt-1 text-xs text-slate-500">Enter page numbers separated by commas (e.g., 1,2) or ranges (e.g., 1-2). Make sure page numbers don&apos;t exceed the total pages in your PDF.</p>
                   </div>
                 )}
               </div>

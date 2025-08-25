@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { PDFFileData, FileAction } from "@/types/pdf";
 import { Button } from "@/components/ui/button";
 import { formatFileSize } from "@/lib/format-file-size";
+import Image from "next/image";
 
 const generateFileId = () => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
@@ -44,7 +45,7 @@ const SortableItem = React.memo(({ fileData, index, onRemove, showReorder = true
       {/* File Preview */}
       <div className="flex-shrink-0 w-16 h-20 bg-red-50 rounded border flex items-center justify-center overflow-hidden">
         {fileData.file.type.startsWith("image/") ? (
-          <img
+          <Image
             src={URL.createObjectURL(fileData.file)}
             alt={fileData.name}
             className="w-full h-full object-cover"

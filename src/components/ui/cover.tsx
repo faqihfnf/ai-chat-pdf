@@ -5,13 +5,7 @@ import { useRef } from "react";
 import { cn } from "@/lib/utils";
 import { SparklesCore } from "@/components/ui/sparkles";
 
-export const Cover = ({
-  children,
-  className,
-}: {
-  children?: React.ReactNode;
-  className?: string;
-}) => {
+export const Cover = ({ children, className }: { children?: React.ReactNode; className?: string }) => {
   const [hovered, setHovered] = useState(false);
 
   const ref = useRef<HTMLDivElement>(null);
@@ -20,18 +14,32 @@ export const Cover = ({
   const [beamPositions, setBeamPositions] = useState<number[]>([]);
 
   useEffect(() => {
-    if (ref.current) {
-      setContainerWidth(ref.current?.clientWidth ?? 0);
+    const updateDimensions = () => {
+      if (ref.current) {
+        setContainerWidth(ref.current.clientWidth ?? 0);
 
-      const height = ref.current?.clientHeight ?? 0;
-      const numberOfBeams = Math.floor(height / 10); // Adjust the divisor to control the spacing
-      const positions = Array.from(
-        { length: numberOfBeams },
-        (_, i) => (i + 1) * (height / (numberOfBeams + 1))
-      );
-      setBeamPositions(positions);
-    }
-  }, [ref.current]);
+        const height = ref.current.clientHeight ?? 0;
+        const numberOfBeams = Math.floor(height / 10); // Adjust the divisor to control the spacing
+        const positions = Array.from({ length: numberOfBeams }, (_, i) => (i + 1) * (height / (numberOfBeams + 1)));
+        setBeamPositions(positions);
+      }
+    };
+
+    // Initial calculation
+    updateDimensions();
+
+    // Optional: Add resize listener for responsive behavior
+    const handleResize = () => {
+      updateDimensions();
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []); // Remove ref.current from dependencies
 
   return (
     <div
@@ -66,22 +74,8 @@ export const Cover = ({
               }}
               className="w-[200%] h-full flex"
             >
-              <SparklesCore
-                background="transparent"
-                minSize={0.4}
-                maxSize={1}
-                particleDensity={500}
-                className="w-full h-full"
-                particleColor="#FFFFFF"
-              />
-              <SparklesCore
-                background="transparent"
-                minSize={0.4}
-                maxSize={1}
-                particleDensity={500}
-                className="w-full h-full"
-                particleColor="#FFFFFF"
-              />
+              <SparklesCore background="transparent" minSize={0.4} maxSize={1} particleDensity={500} className="w-full h-full" particleColor="#FFFFFF" />
+              <SparklesCore background="transparent" minSize={0.4} maxSize={1} particleDensity={500} className="w-full h-full" particleColor="#FFFFFF" />
             </motion.div>
           </motion.div>
         )}
@@ -130,10 +124,7 @@ export const Cover = ({
             duration: 0.2,
           },
         }}
-        className={cn(
-          "dark:text-white inline-block text-neutral-900 relative z-20 group-hover/cover:text-white transition duration-200",
-          className
-        )}
+        className={cn("dark:text-white inline-block text-neutral-900 relative z-20 group-hover/cover:text-white transition duration-200", className)}
       >
         {children}
       </motion.span>
@@ -162,19 +153,8 @@ export const Beam = ({
   const id = useId();
 
   return (
-    <motion.svg
-      width={width ?? "600"}
-      height="1"
-      viewBox={`0 0 ${width ?? "600"} 1`}
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={cn("absolute inset-x-0 w-full", className)}
-      {...svgProps}
-    >
-      <motion.path
-        d={`M0 0.5H${width ?? "600"}`}
-        stroke={`url(#svgGradient-${id})`}
-      />
+    <motion.svg width={width ?? "600"} height="1" viewBox={`0 0 ${width ?? "600"} 1`} fill="none" xmlns="http://www.w3.org/2000/svg" className={cn("absolute inset-x-0 w-full", className)} {...svgProps}>
+      <motion.path d={`M0 0.5H${width ?? "600"}`} stroke={`url(#svgGradient-${id})`} />
 
       <defs>
         <motion.linearGradient
@@ -210,19 +190,12 @@ export const Beam = ({
   );
 };
 
-export const CircleIcon = ({
-  className,
-  delay,
-}: {
-  className?: string;
-  delay?: number;
-}) => {
+export const CircleIcon = ({ className, delay }: { className?: string; delay?: number }) => {
   return (
     <div
-      className={cn(
-        `pointer-events-none animate-pulse group-hover/cover:hidden group-hover/cover:opacity-100 group h-2 w-2 rounded-full bg-neutral-600 dark:bg-white opacity-20 group-hover/cover:bg-white`,
-        className
-      )}
+      className={cn(`pointer-events-none animate-pulse group-hover/cover:hidden group-hover/cover:opacity-100 group h-2 w-2 rounded-full bg-neutral-600 dark:bg-white opacity-20 group-hover/cover:bg-white`, className, {
+        "delay-300": delay,
+      })}
     ></div>
   );
 };
