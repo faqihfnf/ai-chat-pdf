@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Macondo, Poppins } from "next/font/google";
+import { Inter, Macondo, Poppins, Righteous } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
@@ -13,6 +13,12 @@ const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
+
+const righteous = Righteous({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-righteous",
 });
 
 const macondo = Macondo({
@@ -34,7 +40,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <QueryProvider>
-        <html lang="en" className={macondo.variable} suppressHydrationWarning>
+        <html lang="en" className={`${righteous.variable} ${macondo.variable}`} suppressHydrationWarning>
           <body className={` ${poppins.className} ${inter.className}  antialiased`}>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
               <Navbar />

@@ -18,7 +18,7 @@ export default function Navbar() {
   return (
     <div className="fixed items-center justify-between flex w-full p-3 top-0 z-50 bg-white/10 backdrop-blur-md border-b-[1px] border-slate-300/20 h-14">
       {/* Logo */}
-      <Link href="/" className="text-2xl bg-clip-text text-transparent bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 font-macondo font-extrabold">
+      <Link href="/" className="text-3xl bg-clip-text text-transparent bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 font-righteous font-extrabold">
         Pi-Di-Ef.
       </Link>
 

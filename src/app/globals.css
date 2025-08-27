@@ -210,3 +210,7 @@
 .font-macondo {
   font-family: var(--font-macondo);
 }
+
+.font-righteous {
+  font-family: var(--font-righteous);
+}
