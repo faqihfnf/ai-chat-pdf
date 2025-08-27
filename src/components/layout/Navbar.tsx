@@ -6,6 +6,7 @@ import ModeToggle from "./ModeToggle";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -18,8 +19,9 @@ export default function Navbar() {
   return (
     <div className="fixed items-center justify-between flex w-full p-3 top-0 z-50 bg-white/10 backdrop-blur-md border-b-[1px] border-slate-300/20 h-14">
       {/* Logo */}
-      <Link href="/" className="text-3xl bg-clip-text text-transparent bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 font-righteous font-extrabold">
-        Pi-Di-Ef.
+      <Link href="/" className="flex">
+        <Image src="/logo.png" width={40} height={40} alt="logo" className="" />{" "}
+        <span className="text-3xl bg-clip-text text-transparent bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 font-righteous font-extrabold mt-1 -ml-1.5">idief.</span>
       </Link>
 
       {/* Desktop Menu */}
