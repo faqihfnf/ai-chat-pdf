@@ -14,7 +14,7 @@ export const FILE_UPLOAD_LIMITS = {
     maxFileSize: 50 * 1024 * 1024,
     minFiles: 1,
   },
-  ROTATE_PDF: {
+  REMOVE_PDF: {
     maxFiles: 1,
     maxFileSize: 30 * 1024 * 1024,
     minFiles: 1,

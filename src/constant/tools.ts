@@ -126,6 +126,5 @@ export const pdfTools: PdfTool[] = [
     bgColor: "bg-emerald-100",
     textColor: "text-emerald-600",
     shadowColor: "shadow-emerald-300",
-    isComingSoon: true,
   },
 ];

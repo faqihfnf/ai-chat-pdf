@@ -13,21 +13,21 @@ export default function Navbar() {
 
   const isHome = pathname === "/";
 
-  const linkClass = (path: string) => `font-semibold text-lg ${pathname === path ? "text-orange-500 dark" : "text-slate-800 dark:text-slate-200 hover:text-orange-500 dark:hover:text-orange-500"}`;
+  const linkClass = (path: string) => `font-semibold text-lg dark:text-orang-500 ${pathname === path ? "text-orange-500 dark:text-amber-500" : "text-slate-800 dark:text-orange-500 hover:text-orange-500 dark:hover:text-amber-500"}`;
 
   return (
     <div className="fixed items-center justify-between flex w-full p-3 top-0 z-50 bg-white/10 backdrop-blur-md border-b-[1px] border-slate-300/20 h-14">
       {/* Logo */}
       <Link href="/" className="text-2xl bg-clip-text text-transparent bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 font-macondo font-extrabold">
-        ChatPDF.
+        Pi-Di-Ef.
       </Link>
 
       {/* Desktop Menu */}
       <SignedIn>
         {!isHome && (
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-4 dark:text-orange-500">
             <Link href="/dashboard" className={linkClass("/dashboard")}>
-              Dashboard
+              Chat
             </Link>
             <Link href="/tools" className={linkClass("/tools")}>
               Tools
@@ -67,7 +67,7 @@ export default function Navbar() {
       {isOpen && (
         <div className="absolute top-14 right-0 bg-white dark:bg-slate-900 w-full shadow-lg py-2 md:hidden">
           <Link href="/dashboard" className={`block px-4 py-2 ${pathname === "/dashboard" ? "text-orange-500" : "hover:bg-slate-100 dark:hover:bg-slate-800"}`} onClick={() => setIsOpen(false)}>
-            Dashboard
+            Chat
           </Link>
           <Link href="/tools" className={`block px-4 py-2 ${pathname === "/tools" ? "text-orange-500" : "hover:bg-slate-100 dark:hover:bg-slate-800"}`} onClick={() => setIsOpen(false)}>
             Tools
