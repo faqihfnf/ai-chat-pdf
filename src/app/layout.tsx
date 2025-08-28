@@ -44,7 +44,7 @@ export default function RootLayout({
           <body className={` ${poppins.className} ${inter.className}  antialiased`}>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
               <Navbar />
-              <main className="min-h-screen">{children}</main>
+              <main className="min-h-screen overflow-x-hidden">{children}</main>
               <Toaster />
               <Footer />
             </ThemeProvider>
