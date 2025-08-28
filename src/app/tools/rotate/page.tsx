@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { RotateCw, ArrowDown, CornerDownRight, CornerDownLeft } from "lucide-react";
+import { useState, useCallback } from "react";
+import { RotateCw, ArrowDown, CornerDownRight, CornerDownLeft, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { usePdfProcessor } from "@/hooks/usePdfProcessor";
 import { FILE_UPLOAD_LIMITS } from "@/constant/file-upload-limit";
@@ -19,7 +19,22 @@ export default function RotatePdfPage() {
   const [rotateAll, setRotateAll] = useState<boolean>(true);
   const [specificPages, setSpecificPages] = useState<string>("");
 
-  const { isLoading, progress } = usePdfProcessor({
+  // Custom FormData function for rotate PDF
+  const createCustomFormData = useCallback(
+    (filesToProcess: File[]) => {
+      const formData = new FormData();
+      filesToProcess.forEach((file) => {
+        formData.append("files", file);
+      });
+      formData.append("rotation", rotationAngle.toString());
+      formData.append("rotateAll", rotateAll.toString());
+      formData.append("specificPages", specificPages.trim());
+      return formData;
+    },
+    [rotationAngle, rotateAll, specificPages]
+  );
+
+  const { processFiles, isLoading, progress } = usePdfProcessor({
     apiEndpoint: "/api/tools/rotate",
     minFiles: limits.minFiles,
     maxFiles: limits.maxFiles,
@@ -27,90 +42,75 @@ export default function RotatePdfPage() {
     successMessage: `PDF rotated ${rotationAngle}° successfully!`,
     downloadFileName: `rotated-${rotationAngle}deg-pdf`,
     skipFileTypeValidation: false, // Only PDF files
+    customFormData: createCustomFormData, // Use custom FormData
   });
 
-  const handleFileDrop = (newFiles: File[]) => {
+  const handleFileDrop = useCallback((newFiles: File[]) => {
     setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-  };
+  }, []);
 
-  const handleFilesChange = (updatedFiles: File[]) => {
+  const handleFilesChange = useCallback((updatedFiles: File[]) => {
     setFiles(updatedFiles);
-  };
+  }, []);
 
-  const handleRotate = async (filesToProcess: File[]) => {
-    // Validate specific pages input if rotateAll is false
-    if (!rotateAll && specificPages.trim()) {
-      // Basic client-side validation
-      const pageStr = specificPages.trim();
-      if (!/^[\d,\s-]+$/.test(pageStr)) {
+  const validateSpecificPages = useCallback(() => {
+    if (rotateAll) return true;
+    if (!specificPages.trim()) return false;
+
+    // Basic client-side validation
+    const pageStr = specificPages.trim();
+    if (!/^[\d,\s-]+$/.test(pageStr)) return false;
+
+    // Additional validation for ranges
+    const parts = pageStr.split(",");
+    for (const part of parts) {
+      const trimmed = part.trim();
+      if (trimmed.includes("-")) {
+        const [start, end] = trimmed.split("-");
+        const startNum = parseInt(start?.trim() || "0");
+        const endNum = parseInt(end?.trim() || "0");
+        if (startNum <= 0 || endNum <= 0 || startNum > endNum) {
+          return false;
+        }
+      } else {
+        const num = parseInt(trimmed);
+        if (num <= 0 || isNaN(num)) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }, [rotateAll, specificPages]);
+
+  const handleRotate = useCallback(
+    async (filesToProcess: File[]) => {
+      // Validate specific pages input if rotateAll is false
+      if (!validateSpecificPages()) {
         toast.error("Invalid format. Use numbers, commas, and dashes only (e.g., 1,3,5 or 1-3,5)");
         return;
       }
+
+      // Use the hook's processFiles with custom FormData
+      await processFiles(filesToProcess);
+    },
+    [validateSpecificPages, processFiles]
+  );
+
+  const handleRotationAngleChange = useCallback((angle: number) => {
+    setRotationAngle(angle);
+  }, []);
+
+  const handleRotateAllChange = useCallback((value: boolean) => {
+    setRotateAll(value);
+    if (value) {
+      setSpecificPages(""); // Clear specific pages when switching to rotate all
     }
+  }, []);
 
-    // Create custom processFiles function with FormData
-    const customProcessFiles = async (files: File[]) => {
-      const formData = new FormData();
-      files.forEach((file) => {
-        formData.append("files", file);
-      });
-      formData.append("rotation", rotationAngle.toString());
-      formData.append("rotateAll", rotateAll.toString());
-      formData.append("specificPages", specificPages.trim());
-
-      const response = await fetch("/api/tools/rotate", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        // Show more specific error message if available
-        const errorMessage = errorData.details ? `${errorData.error}. ${errorData.details}` : errorData.error || "Failed to rotate PDF";
-
-        // Don't throw error, just return error object
-        return { error: errorMessage };
-      }
-
-      // Get the rotated PDF as blob
-      const blob = await response.blob();
-
-      // Generate filename with rotation info
-      const timestamp = new Date().toISOString().slice(0, 19).replace(/[:-]/g, "");
-      const filename = `rotated_${rotationAngle}deg_${timestamp}.pdf`;
-
-      // Download the file
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = filename;
-      a.style.display = "none";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(url), 100);
-
-      return { success: true }; // Return success object
-    };
-
-    // Handle the result without throwing errors
-    try {
-      const result = await customProcessFiles(filesToProcess);
-
-      if (result && "error" in result) {
-        // Handle error case
-        toast.error(result.error);
-        return; // Don't throw, just return
-      }
-
-      // Handle success case
-      toast.success(`PDF rotated ${rotationAngle}° successfully!`);
-    } catch (error) {
-      console.error("Unexpected error rotating PDF:", error);
-      // Even catch blocks shouldn't throw, just show toast
-      toast.error("An unexpected error occurred while rotating PDF");
-    }
-  };
+  const handleSpecificPagesChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSpecificPages(e.target.value);
+  }, []);
 
   const rotationOptions = [
     { value: 90, label: "90° (Right)", icon: CornerDownRight },
@@ -118,13 +118,15 @@ export default function RotatePdfPage() {
     { value: 270, label: "270° (Left)", icon: CornerDownLeft },
   ];
 
+  const isFormValid = files.length > 0 && validateSpecificPages();
+
   const actions = [
     {
       label: `Rotate ${rotationAngle}°`,
       onClick: handleRotate,
       icon: RotateCw,
       requiresMinFiles: 1,
-      disabled: isLoading || files.length === 0,
+      disabled: isLoading || !isFormValid,
     },
   ];
 
@@ -196,7 +198,7 @@ export default function RotatePdfPage() {
         {isLoading && (
           <div className="w-full">
             <ProgressBar progress={progress} />
-            <p className="text-center text-sm text-slate-600 mt-2">Rotating your PDF {rotationAngle}°... Please wait.</p>
+            <p className="text-center text-sm mt-2 animate-pulse">Processing your PDF... Please wait.</p>
           </div>
         )}
 

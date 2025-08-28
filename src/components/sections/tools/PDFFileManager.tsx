@@ -236,14 +236,14 @@ export default function PdfFileManager({ files, onFilesChange, actions, title = 
         <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
           {/* Main Actions */}
           {actions.map((action, index) => (
-            <Button key={index} size="xl" variant={action.variant || "primary"} onClick={() => handleActionClick(action)} disabled={action.disabled || isProcessing} className="flex items-center gap-2">
+            <Button key={index} size="xl" variant={action.variant || "primary"} onClick={() => handleActionClick(action)} disabled={action.disabled || isProcessing} className="flex items-center gap-2 w-48">
               {action.icon && <action.icon className="h-5 w-5" />}
               {action.label}
             </Button>
           ))}
 
           {/* Reset Button */}
-          <Button size="xl" variant="outline" onClick={handleResetAll} disabled={isProcessing} className="hover:bg-red-500 dark:hover:bg-red-500 hover:text-white">
+          <Button size="xl" variant="secondary" onClick={handleResetAll} disabled={isProcessing} className="hover:bg-red-500 dark:hover:bg-red-500 hover:text-white border border-slate-200 dark:border-slate-700 w-48">
             <Eraser className="h-5 w-5" /> Reset All
           </Button>
         </div>

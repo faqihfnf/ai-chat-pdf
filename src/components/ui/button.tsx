@@ -14,7 +14,7 @@ const buttonVariants = cva(
         tertiary: "bg-gradient-to-tr hover:bg-gradient-to-tl from-sky-500 via-cyan-500 to-emerald-500 shadow-lg hover:shadow-xl text-white font-semibold",
         destructive: "bg-destructive text-white shadow-xs hover:bg-red-700 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 cursor-pointer",
         indigo: "bg-indigo-700 text-white shadow-xs hover:bg-indigo-600 focus-visible:ring-indigo-700/20 dark:focus-visible:ring-indigo-700/40 dark:bg-indigo-700/60 cursor-pointer",
-        outline: "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 cursor-pointer",
+        outline: "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:hover:text-black dark:bg-input/30 dark:border-slate-200 dark:hover:bg-slate-100 text-black cursor-pointer",
         secondary: "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80 cursor-pointer",
         ghost: "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 cursor-pointer",
         link: "text-primary underline-offset-4 hover:underline cursor-pointer",
