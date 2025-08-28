@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Trash2 } from "lucide-react";
+import { useState, useCallback } from "react";
+import { Trash2, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { usePdfProcessor } from "@/hooks/usePdfProcessor";
 import { FILE_UPLOAD_LIMITS } from "@/constant/file-upload-limit";
@@ -9,12 +9,24 @@ import FileUploadZone from "@/components/sections/tools/FileUploadZone";
 import ToolHeader from "@/components/sections/tools/ToolHeader";
 import ProgressBar from "@/components/ui/progress-bar";
 import PdfFileManager from "@/components/sections/tools/PdfFileManager";
+import { Input } from "@/components/ui/input";
 
 const limits = FILE_UPLOAD_LIMITS.REMOVE_PDF;
 
 export default function RemovePdfPagesPage() {
   const [files, setFiles] = useState<File[]>([]);
   const [pagesToRemove, setPagesToRemove] = useState<string>("");
+
+  // Custom FormData function for remove PDF pages
+  const createCustomFormData = useCallback(
+    (filesToProcess: File[]) => {
+      const formData = new FormData();
+      formData.append("files", filesToProcess[0]); // Only one file for remove pages
+      formData.append("pagesToRemove", pagesToRemove);
+      return formData;
+    },
+    [pagesToRemove]
+  );
 
   const { processFiles, isLoading, progress } = usePdfProcessor({
     apiEndpoint: "/api/tools/remove",
@@ -24,72 +36,69 @@ export default function RemovePdfPagesPage() {
     successMessage: "Pages removed from PDF successfully!",
     downloadFileName: "removed_pages_pdf",
     skipFileTypeValidation: false, // Only accept PDF files
+    customFormData: createCustomFormData, // Use custom FormData
   });
 
-  const handleFileDrop = (newFiles: File[]) => {
+  const handleFileDrop = useCallback((newFiles: File[]) => {
     setFiles(newFiles.slice(0, 1)); // Only allow one file
-  };
+  }, []);
 
-  const handleFilesChange = (updatedFiles: File[]) => {
+  const handleFilesChange = useCallback((updatedFiles: File[]) => {
     setFiles(updatedFiles);
-  };
+  }, []);
 
-  const handleRemovePages = async (filesToProcess: File[]) => {
-    if (!pagesToRemove.trim()) {
-      toast.error("Please enter page numbers to remove");
-      return;
-    }
+  const validatePageNumbers = useCallback(() => {
+    if (!pagesToRemove.trim()) return false;
 
-    // Validate page format
-    const pagePattern = /^[\d\s,]+$/;
-    if (!pagePattern.test(pagesToRemove)) {
-      toast.error("Please enter valid page numbers separated by commas (e.g., 1, 3, 5-7)");
-      return;
-    }
+    // Pattern to match page numbers and ranges (e.g., 1, 3, 5-7, 10)
+    const pagePattern = /^[\d\s,\-]+$/;
+    if (!pagePattern.test(pagesToRemove)) return false;
 
-    // Create FormData with pages to remove
-    // const originalProcessFiles = processFiles;
-
-    // Override the processFiles to include pagesToRemove
-    const customProcessFiles = async (files: File[]) => {
-      const formData = new FormData();
-      files.forEach((file) => {
-        formData.append("files", file);
-      });
-      formData.append("pagesToRemove", pagesToRemove);
-
-      // Call the API directly since we need custom FormData
-      try {
-        const response = await fetch("/api/tools/remove", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          toast.error(errorData.error || "Failed to remove pages");
-          return;
+    // Additional validation - check if ranges are valid
+    const parts = pagesToRemove.split(",");
+    for (const part of parts) {
+      const trimmed = part.trim();
+      if (trimmed.includes("-")) {
+        const [start, end] = trimmed.split("-");
+        const startNum = parseInt(start?.trim() || "0");
+        const endNum = parseInt(end?.trim() || "0");
+        if (startNum <= 0 || endNum <= 0 || startNum > endNum) {
+          return false;
         }
-
-        const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `removed_pages_${new Date().toISOString().slice(0, 19).replace(/[:-]/g, "")}.pdf`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-
-        toast.success("Pages removed successfully!");
-      } catch (error) {
-        console.error("Error:", error);
-        toast.error(error instanceof Error ? error.message : "Failed to remove pages");
+      } else {
+        const num = parseInt(trimmed);
+        if (num <= 0 || isNaN(num)) {
+          return false;
+        }
       }
-    };
+    }
 
-    await customProcessFiles(filesToProcess);
-  };
+    return true;
+  }, [pagesToRemove]);
+
+  const handleRemovePages = useCallback(
+    async (filesToProcess: File[]) => {
+      if (!pagesToRemove.trim()) {
+        toast.error("Please enter page numbers to remove");
+        return;
+      }
+
+      if (!validatePageNumbers()) {
+        toast.error("Please enter valid page numbers separated by commas (e.g., 1, 3, 5-7)");
+        return;
+      }
+
+      // Use the hook's processFiles with custom FormData
+      await processFiles(filesToProcess);
+    },
+    [pagesToRemove, validatePageNumbers, processFiles]
+  );
+
+  const handlePagesToRemoveChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setPagesToRemove(e.target.value);
+  }, []);
+
+  const isFormValid = files.length > 0 && validatePageNumbers();
 
   const actions = [
     {
@@ -97,7 +106,7 @@ export default function RemovePdfPagesPage() {
       onClick: handleRemovePages,
       icon: Trash2,
       requiresMinFiles: 1,
-      disabled: isLoading || files.length === 0 || !pagesToRemove.trim(),
+      disabled: isLoading || !isFormValid,
     },
   ];
 
@@ -111,23 +120,32 @@ export default function RemovePdfPagesPage() {
 
         {/* Page Selection Input */}
         {files.length > 0 && (
-          <div className="bg-white rounded-lg border border-slate-200 p-6">
-            <h3 className="text-lg font-semibold dark:text-slate-700 mb-4">Select Pages to Remove</h3>
+          <div className="bg-white rounded-lg border p-6 shadow-sm text-slate-700">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <FileText className="w-5 h-5" />
+              Select Pages to Remove
+            </h3>
             <div className="space-y-4">
               <div>
-                <label htmlFor="pagesToRemove" className="block text-sm font-medium dark:text-slate-700 mb-2">
+                <label htmlFor="pagesToRemove" className="block text-sm font-medium text-slate-700 mb-2">
                   Page Numbers
                 </label>
-                <input
+                <Input
                   id="pagesToRemove"
                   type="text"
                   value={pagesToRemove}
-                  onChange={(e) => setPagesToRemove(e.target.value)}
+                  onChange={handlePagesToRemoveChange}
                   placeholder="e.g. 1, 3, 5, 7-9"
-                  className="w-full px-3 py-2 border border-slate-300 dark:text-slate-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm text-slate-700 disabled:bg-slate-100"
                   disabled={isLoading}
                 />
-                <p className="mt-1 text-sm text-slate-500">Enter page numbers separated by commas (e.g. 1, 3, 5 or 2-4, 7, 10)</p>
+                <div className="mt-2 space-y-1">
+                  <p className="text-sm text-slate-700">Enter page numbers separated by commas (e.g. 1, 3, 5 or 2-4, 7, 10)</p>
+                </div>
+
+                {pagesToRemove && !validatePageNumbers() && <div className="mt-2 text-sm text-red-600 bg-red-50 p-2 rounded">Please enter valid page numbers. Use commas to separate individual pages and hyphens for ranges.</div>}
+
+                {pagesToRemove && validatePageNumbers() && <div className="mt-2 text-sm text-green-600 bg-green-50 p-2 rounded">✓ Valid page selection: {pagesToRemove}</div>}
               </div>
             </div>
           </div>
@@ -137,7 +155,7 @@ export default function RemovePdfPagesPage() {
         {isLoading && (
           <div className="w-full">
             <ProgressBar progress={progress} />
-            <p className="text-center text-sm mt-2 animate-pulse">Removing pages from PDF... Please wait.</p>
+            <p className="text-center text-sm mt-2 animate-pulse">Processing your PDF... Please wait.</p>
           </div>
         )}
 
