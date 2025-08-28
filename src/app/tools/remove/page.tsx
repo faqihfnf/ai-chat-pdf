@@ -48,7 +48,7 @@ export default function RemovePdfPagesPage() {
     }
 
     // Create FormData with pages to remove
-    const originalProcessFiles = processFiles;
+    // const originalProcessFiles = processFiles;
 
     // Override the processFiles to include pagesToRemove
     const customProcessFiles = async (files: File[]) => {

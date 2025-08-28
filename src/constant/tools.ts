@@ -29,7 +29,6 @@ export const pdfTools: PdfTool[] = [
     bgColor: "bg-orange-100",
     textColor: "text-orange-600",
     shadowColor: "shadow-orange-300",
-    isComingSoon: true,
   },
   {
     href: "/tools/compress",
@@ -121,7 +120,7 @@ export const pdfTools: PdfTool[] = [
   {
     href: "/tools/remove",
     title: "Remove Page",
-    description: "Remove specific pages from a PDF file.",
+    description: "Remove specific pages from your existing PDF file.",
     icon: FilePenLine,
     bgColor: "bg-emerald-100",
     textColor: "text-emerald-600",

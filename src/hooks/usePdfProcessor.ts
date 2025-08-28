@@ -9,6 +9,7 @@ interface UsePdfProcessorOptions {
   successMessage?: string;
   downloadFileName?: string;
   skipFileTypeValidation?: boolean;
+  customFormData?: (files: File[]) => FormData; // New optional custom FormData function
 }
 
 interface UsePdfProcessorReturn {
@@ -23,7 +24,7 @@ export const usePdfProcessor = (options: UsePdfProcessorOptions): UsePdfProcesso
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
-  const { apiEndpoint, minFiles = 1, maxFiles, maxFileSize, successMessage = "Files processed successfully!", downloadFileName = "processed", skipFileTypeValidation = false } = options;
+  const { apiEndpoint, minFiles = 1, maxFiles, maxFileSize, successMessage = "Files processed successfully!", downloadFileName = "processed", skipFileTypeValidation = false, customFormData } = options;
 
   const validateFiles = useCallback(
     (files: File[]): boolean => {
@@ -45,7 +46,7 @@ export const usePdfProcessor = (options: UsePdfProcessorOptions): UsePdfProcesso
 
       // Validate each file
       for (const file of files) {
-        // MODIFIKASI: Skip PDF validation jika skipFileTypeValidation = true
+        // Skip PDF validation if skipFileTypeValidation = true
         if (!skipFileTypeValidation && file.type !== "application/pdf") {
           toast.error(`File "${file.name}" is not a valid PDF`);
           return false;
@@ -99,28 +100,32 @@ export const usePdfProcessor = (options: UsePdfProcessorOptions): UsePdfProcesso
           files.map((f) => ({ name: f.name, size: f.size, type: f.type }))
         );
 
-        // Simulate progress updates
+        // Start progress simulation
         progressInterval = setInterval(() => {
           setProgress((prev) => {
             if (prev >= 90) {
-              if (progressInterval) clearInterval(progressInterval);
-              return 90;
+              return 90; // Don't complete until we actually finish
             }
-            return prev + 10;
+            return prev + Math.random() * 15 + 5; // More realistic progress increments
           });
-        }, 200);
+        }, 300);
 
-        // Create FormData
-        const formData = new FormData();
-        files.forEach((file) => {
-          formData.append("files", file);
-        });
+        // Create FormData - use custom function if provided, otherwise default
+        const formData = customFormData
+          ? customFormData(files)
+          : (() => {
+              const defaultFormData = new FormData();
+              files.forEach((file) => {
+                defaultFormData.append("files", file);
+              });
+              return defaultFormData;
+            })();
 
         console.log(`Sending request to ${apiEndpoint}...`);
 
         // Send request to API
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s timeout
+        const timeoutId = setTimeout(() => controller.abort(), 60000); // Increased to 60s for larger files
 
         const response = await fetch(apiEndpoint, {
           method: "POST",
@@ -129,7 +134,10 @@ export const usePdfProcessor = (options: UsePdfProcessorOptions): UsePdfProcesso
         });
 
         clearTimeout(timeoutId);
-        if (progressInterval) clearInterval(progressInterval);
+        if (progressInterval) {
+          clearInterval(progressInterval);
+          progressInterval = null;
+        }
         setProgress(100);
 
         console.log("Response status:", response.status);
@@ -152,25 +160,27 @@ export const usePdfProcessor = (options: UsePdfProcessorOptions): UsePdfProcesso
           throw new Error(errorMessage);
         }
 
-        // Check content type
+        // Check content type and handle accordingly
         const contentType = response.headers.get("content-type");
-        if (!contentType?.includes("application/pdf")) {
-          const responseText = await response.text();
-          console.error("Expected PDF but got:", contentType, responseText.substring(0, 200));
-          throw new Error("Server returned unexpected content type");
-        }
-
-        // Get the processed PDF as blob
         const blob = await response.blob();
-        console.log("PDF blob created, size:", blob.size);
+        console.log("File blob created, size:", blob.size, "type:", contentType);
 
         if (blob.size === 0) {
-          throw new Error("Received empty PDF file");
+          throw new Error("Received empty file");
         }
 
         // Generate filename with timestamp
         const timestamp = new Date().toISOString().slice(0, 19).replace(/[:-]/g, "");
-        const filename = `${downloadFileName}_${timestamp}.pdf`;
+
+        let filename: string;
+        if (contentType?.includes("application/zip")) {
+          filename = `${downloadFileName}_${timestamp}.zip`;
+        } else if (contentType?.includes("application/pdf")) {
+          filename = `${downloadFileName}_${timestamp}.pdf`;
+        } else {
+          // Fallback based on blob type or default to PDF
+          filename = `${downloadFileName}_${timestamp}.${blob.type.includes("zip") ? "zip" : "pdf"}`;
+        }
 
         // Download the file
         downloadFile(blob, filename);
@@ -191,12 +201,15 @@ export const usePdfProcessor = (options: UsePdfProcessorOptions): UsePdfProcesso
         setError(errorMessage);
         toast.error(errorMessage);
       } finally {
-        if (progressInterval) clearInterval(progressInterval);
+        if (progressInterval) {
+          clearInterval(progressInterval);
+        }
         setIsLoading(false);
-        setTimeout(() => setProgress(0), 1000); // Reset progress after delay
+        // Reset progress after a short delay to show completion
+        setTimeout(() => setProgress(0), 2000);
       }
     },
-    [apiEndpoint, validateFiles, downloadFile, successMessage, downloadFileName]
+    [apiEndpoint, validateFiles, downloadFile, successMessage, downloadFileName, customFormData]
   );
 
   return {
