@@ -46,12 +46,12 @@ export default function HeroImage() {
               <Brain className="size-3 text-orange-600" />
               <span className="text-xs font-medium text-slate-700">Smart</span>
             </div>
-            <div className="flex justify-center items-center gap-2 bg-white/60 backdrop-blur-sm rounded-full px-1 py-2 border-orange-200/50 shadow-sm shadow-orange-300 hover:shadow-md transition-all duration-300 hover:scale-105">
-              <Zap className="size-3 text-orange-600" />
+            <div className="flex justify-center items-center gap-2 bg-white/60 backdrop-blur-sm rounded-full px-1 py-2 border-rose-200/50 shadow-sm shadow-rose-300 hover:shadow-md transition-all duration-300 hover:scale-105">
+              <Zap className="size-3 text-rose-600" />
               <span className="text-xs font-medium text-slate-700">Instant</span>
             </div>
-            <div className="flex justify-center items-center gap-2 bg-white/60 backdrop-blur-sm rounded-full px-1 py-2 border-orange-200/50 shadow-sm shadow-orange-300 hover:shadow-md transition-all duration-300 hover:scale-105">
-              <MessageCircle className="size-3 text-orange-600" />
+            <div className="flex justify-center items-center gap-2 bg-white/60 backdrop-blur-sm rounded-full px-1 py-2 border-amber-200/50 shadow-sm shadow-amber-300 hover:shadow-md transition-all duration-300 hover:scale-105">
+              <MessageCircle className="size-3 text-amber-600" />
               <span className="text-xs font-medium text-slate-700">Realtime</span>
             </div>
           </div>
@@ -92,16 +92,16 @@ export default function HeroImage() {
 
           {/* Badge Grid */}
           <div className="grid grid-cols-3 gap-2">
-            <div className="flex justify-center items-center gap-2 bg-white/60 backdrop-blur-sm rounded-full px-1 py-2 border-cyan-200/50 shadow-sm shadow-cyan-300 hover:shadow-md transition-all duration-300 hover:scale-105">
-              <SwatchBook className="size-3 text-cyan-600" />
+            <div className="flex justify-center items-center gap-2 bg-white/60 backdrop-blur-sm rounded-full px-1 py-2 border-sky-200/50 shadow-sm shadow-sky-300 hover:shadow-md transition-all duration-300 hover:scale-105">
+              <SwatchBook className="size-3 text-sky-600" />
               <span className="text-xs font-medium text-slate-700">Simple</span>
             </div>
             <div className="flex justify-center items-center gap-2 bg-white/60 backdrop-blur-sm rounded-full px-1 py-2 border-cyan-200/50 shadow-sm shadow-cyan-300 hover:shadow-md transition-all duration-300 hover:scale-105">
               <BicepsFlexed className="size-3 text-cyan-600" />
               <span className="text-xs font-medium text-slate-700">Powerfull</span>
             </div>
-            <div className="flex justify-center items-center gap-2 bg-white/60 backdrop-blur-sm rounded-full px-1 py-2 border-cyan-200/50 shadow-sm shadow-cyan-300 hover:shadow-md transition-all duration-300 hover:scale-105">
-              <Shapes className="size-3 text-cyan-600" />
+            <div className="flex justify-center items-center gap-2 bg-white/60 backdrop-blur-sm rounded-full px-1 py-2 border-emerald-200/50 shadow-sm shadow-emerald-300 hover:shadow-md transition-all duration-300 hover:scale-105">
+              <Shapes className="size-3 text-emerald-600" />
               <span className="text-xs font-medium text-slate-700">Equipped</span>
             </div>
           </div>
