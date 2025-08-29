@@ -76,7 +76,6 @@ export const pdfTools: PdfTool[] = [
     bgColor: "bg-teal-100",
     textColor: "text-teal-600",
     shadowColor: "shadow-teal-300",
-    isComingSoon: true,
   },
   {
     href: "/tools/img-to-pdf",

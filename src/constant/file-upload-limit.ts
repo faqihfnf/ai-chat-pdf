@@ -29,4 +29,9 @@ export const FILE_UPLOAD_LIMITS = {
     maxFileSize: 30 * 1024 * 1024,
     minFiles: 1,
   },
+  WATERMARK_PDF: {
+    maxFiles: 1,
+    maxFileSize: 30 * 1024 * 1024,
+    minFiles: 1,
+  },
 };
