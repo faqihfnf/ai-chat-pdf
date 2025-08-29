@@ -11,6 +11,7 @@ import PdfFileManager from "@/components/sections/tools/PdfFileManager";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
+import ColorPicker from "@/components/sections/tools/ColorPicker";
 
 const limits = FILE_UPLOAD_LIMITS.WATERMARK_PDF;
 
@@ -19,9 +20,9 @@ export default function WatermarkPdfPage() {
   const [watermarkSettings, setWatermarkSettings] = useState({
     text: "WATERMARK",
     opacity: 0.5,
-    fontSize: 48,
+    fontSize: 70,
     position: "default",
-    color: "red",
+    color: "gray",
   });
 
   const { processFiles, isLoading, progress } = usePdfProcessor({
@@ -120,37 +121,54 @@ export default function WatermarkPdfPage() {
               {/* Color */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">Color</label>
-                <Select value={watermarkSettings.color} onValueChange={(value) => setWatermarkSettings({ ...watermarkSettings, color: value })} disabled={isLoading}>
-                  <SelectTrigger className="w-full text-slate-700">
-                    <SelectValue placeholder="Select color" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="red">Red</SelectItem>
-                    <SelectItem value="blue">Blue</SelectItem>
-                    <SelectItem value="green">Green</SelectItem>
-                    <SelectItem value="black">Black</SelectItem>
-                    <SelectItem value="slate">slate</SelectItem>
-                    <SelectItem value="white">White</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="flex items-center gap-3">
+                  {/* Color Picker */}
+                  <ColorPicker color={watermarkSettings.color} onChange={(c) => setWatermarkSettings({ ...watermarkSettings, color: c.hex })} />
+
+                  {/* Preview kecil */}
+                  <div className="w-8 h-8 rounded border border-slate-300" style={{ backgroundColor: watermarkSettings.color }} />
+                </div>
               </div>
             </div>
 
             {/* Preview */}
-            <div className="mt-4 p-4 bg-slate-50 rounded-md">
+            <div className="mt-4">
               <p className="text-sm text-slate-600 mb-2">Preview:</p>
-              <div className="relative h-16 flex items-center justify-center">
+              <div className="flex justify-start">
                 <div
-                  className="absolute px-3 py-1 rounded border bg-white"
+                  className="relative bg-white border border-slate-300 shadow-sm rounded"
                   style={{
-                    opacity: watermarkSettings.opacity,
-                    fontSize: `${Math.max(watermarkSettings.fontSize / 3, 12)}px`,
-                    color: watermarkSettings.color,
-                    transform: watermarkSettings.position === "default" ? "rotate(45deg)" : "none",
-                    transformOrigin: "center",
+                    width: "150px", // mini kertas (portrait)
+                    height: "200px", // sesuai rasio A4 kecil
                   }}
                 >
-                  {watermarkSettings.text}
+                  {/* Watermark */}
+                  <div
+                    className="absolute px-2 py-1 rounded text-sm font-semibold whitespace-nowrap"
+                    style={{
+                      opacity: watermarkSettings.opacity,
+                      fontSize: `${Math.max(watermarkSettings.fontSize / 5, 10)}px`,
+                      color: watermarkSettings.color,
+                      left:
+                        watermarkSettings.position === "top-left"
+                          ? "10px"
+                          : watermarkSettings.position === "bottom-left"
+                          ? "10px"
+                          : watermarkSettings.position === "top-right"
+                          ? "auto"
+                          : watermarkSettings.position === "bottom-right"
+                          ? "auto"
+                          : "50%", // default & center
+                      right: watermarkSettings.position === "top-right" ? "10px" : watermarkSettings.position === "bottom-right" ? "10px" : "auto",
+                      top: watermarkSettings.position === "top-left" || watermarkSettings.position === "top-right" ? "10px" : watermarkSettings.position === "center" || watermarkSettings.position === "default" ? "50%" : "auto",
+                      bottom: watermarkSettings.position === "bottom-left" || watermarkSettings.position === "bottom-right" ? "10px" : "auto",
+                      transform: watermarkSettings.position === "center" ? "translate(-50%, -50%)" : watermarkSettings.position === "default" ? "translate(-50%, 50%) rotate(-50deg)" : "none",
+                      transformOrigin: "center",
+                      rotate: watermarkSettings.position === "default" ? "5deg" : "0deg",
+                    }}
+                  >
+                    {watermarkSettings.text}
+                  </div>
                 </div>
               </div>
             </div>

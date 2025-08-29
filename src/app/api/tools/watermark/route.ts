@@ -1,6 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PDFDocument, rgb, StandardFonts, degrees } from "pdf-lib";
 
+function hexToRgb(hex: string) {
+  const sanitized = hex.replace("#", "");
+  const bigint = parseInt(sanitized, 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  return rgb(r / 255, g / 255, b / 255);
+}
+
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
@@ -26,7 +35,7 @@ export async function POST(request: NextRequest) {
     // Get font
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
-    // Define color mapping
+    // Define color mapping for named colors
     const colorMap: { [key: string]: any } = {
       red: rgb(1, 0, 0),
       blue: rgb(0, 0, 1),
@@ -36,7 +45,13 @@ export async function POST(request: NextRequest) {
       white: rgb(1, 1, 1),
     };
 
-    const watermarkColor = colorMap[color] || rgb(1, 0, 0);
+    // Detect if color is hex (#xxxxxx) or named
+    let watermarkColor;
+    if (color.startsWith("#")) {
+      watermarkColor = hexToRgb(color);
+    } else {
+      watermarkColor = colorMap[color] || rgb(1, 0, 0);
+    }
 
     // Get all pages
     const pages = pdfDoc.getPages();
@@ -73,14 +88,14 @@ export async function POST(request: NextRequest) {
           break;
         case "default":
         default:
-          x = (width - textWidth) / 2;
-          y = (height - textHeight) / 2;
+          x = 100;
+          y = 100;
           break;
       }
 
-      // Add watermark text with rotation for center position
+      // Add watermark text
       if (position === "default") {
-        // For center position, add rotated text
+        // For default, add rotated text
         page.drawText(watermarkText, {
           x,
           y,
@@ -91,7 +106,6 @@ export async function POST(request: NextRequest) {
           rotate: degrees(45),
         });
       } else {
-        // For other positions, add normal text
         page.drawText(watermarkText, {
           x,
           y,
